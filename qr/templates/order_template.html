@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crushed PB - Order {{ fields.order_id }}</title>
+</head>
+<body>
+    <h1>Your order: {{ fields.order_id }}</h1>
+    <h2>Subtotal: {{ fields.subtotal }}</h2>
+    <h2>Tip: $<span id="tip-amount">0.00</span></h2>
+    <button onclick="percent_tip(.15)">15%</button>
+    <button onclick="percent_tip(.20)">20%</button>
+    <button onclick="percent_tip(.25)">25%</button>
+    <h2>Total: $<span id="total">{{ fields.subtotal }}</span></h2>
+</body>
+<script>
+    var percent_tip = function(percent){
+        var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
+        var tip = (subtotal*percent).toFixed(2);
+        var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
+        document.getElementById('tip-amount').textContent = tip;
+        document.getElementById('total').textContent = total;
+    }
+</script>
+</html>
