@@ -2,24 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
+    <script src="https://www.paypal.com/sdk/js?client-id="></script>
+    <style>
+    .order {
+        margin: 20px auto;
+        width: 80%;
+        max-width: 750px;
+        background-color: #fffff0;
+        background-repeat: repeat-x;
+        color: #3f3f3f;
+        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
+        letter-spacing: 1px;
+        padding: 3rem 0;
+        position: relative;
+        text-align: center;
+        transition: all .25s ease-in-out;
+    }
+    #paypal-button-container{
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    </style>
 </head>
 <body>
-    <h1>Your order: {{ fields.order_id }}</h1>
-    <h2>Subtotal: {{ fields.subtotal }}</h2>
-    <h2>Tip: $<span id="tip-amount">0.00</span></h2>
-    <button onclick="percent_tip(.15)">15%</button>
-    <button onclick="percent_tip(.20)">20%</button>
-    <button onclick="percent_tip(.25)">25%</button>
-    <h2>Total: $<span id="total">{{ fields.subtotal }}</span></h2>
+    <div class="order">
+        <h1>Your order: {{ fields.order_id }}</h1>
+        <h2>Subtotal: {{ fields.subtotal }}</h2>
+        <h2>Tip: $<span id="tip-amount">0.00</span></h2>
+        <button onclick="percent_tip(.15)">15%</button>
+        <button onclick="percent_tip(.20)">20%</button>
+        <button onclick="percent_tip(.25)">25%</button>
+        <h2>Total: $<span id="total">{{ fields.subtotal }}</span></h2>
+    </div>
+    <div id="paypal-button-container"></div>
 </body>
 <script>
+var grandTotal = {{ fields.subtotal }};
     var percent_tip = function(percent){
-        var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
-        var tip = (subtotal*percent).toFixed(2);
-        var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
-        document.getElementById('tip-amount').textContent = tip;
-        document.getElementById('total').textContent = total;
-    }
+            var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
+            var tip = (subtotal*percent).toFixed(2);
+            var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
+            document.getElementById('tip-amount').textContent = tip;
+            document.getElementById('total').textContent = total;
+            grandTotal = total;
+        }
+
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // Set up the transaction
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: grandTotal
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+        //TODO: Do this server side https://developer.paypal.com/docs/checkout/integrate/#6-verify-the-transaction
+            // Capture the funds from the transaction
+            return actions.order.capture().then(function(details) {
+                // Show a success message to your buyer
+                alert('Transaction completed by ' + details.payer.name.given_name);
+                // Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                });
+            });
+        }
+    }).render('#paypal-button-container');
+
 </script>
 </html>
