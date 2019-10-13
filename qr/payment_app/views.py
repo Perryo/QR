@@ -6,3 +6,8 @@ from payment_app.controllers import order_controller
 @require_GET
 def order(request, order_id):
     return order_controller.handle_order(request, order_id)
+
+
+@require_GET
+def dashboard(request):
+    return order_controller.dashboard(request)
