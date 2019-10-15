@@ -2,3 +2,5 @@
 *.idea
 migrations/
 __pycache__
+qr/resources/.DS_Store
+.DS_Store
