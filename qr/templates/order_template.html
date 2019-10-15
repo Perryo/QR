@@ -1,42 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142501568-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-142501568-2');
+</script>
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
-    <script src="https://www.paypal.com/sdk/js?client-id="></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
     <style>
+    body{
+        background:/*#adc6d6 #89beff*/ #ccf6ff;
+    }
     .order {
-        margin: 20px auto;
+        margin: 3vh auto;
         width: 80%;
+<<<<<<< HEAD
         max-width: 750px;
         background-image: url("/static/sierra.jpg");
         background-repeat: repeat-x;
+=======
+        max-width: 350px;
+        background-color: #fff;
+>>>>>>> jeremy
         color: #3f3f3f;
         font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
-        letter-spacing: 1px;
-        padding: 3rem 0;
+        padding:2rem 1rem;
         position: relative;
         text-align: center;
         transition: all .25s ease-in-out;
+        box-shadow: 0 0 50px rgba(0,0,0,.3);
+}
+
+    .logo{
+        width: 250px;
+        height: 75px;
+        background-color: #ccc;
+        display: inline-block;
     }
+
+    .button-group-tip button{
+        border:1px solid #666;
+        border-radius:5px;
+        background:#dedede;
+        padding: 15px 20px;
+        color: #555;
+        font-size: 1.3em;
+        font-weight:bold;
+        letter-spacing:-1px;
+    }
+
+    button.no-tip{
+        color:#999;
+        border:0;
+        background:none;
+    }
+
     #paypal-button-container{
-        max-width: 750px;
+        max-width: 350px;
         margin: 0 auto;
         padding: 0 20px;
+        width: 87%;
     }
+
+
     </style>
+
 </head>
 <body>
     <div class="order">
-        <h1>Your order: {{ fields.order_id }}</h1>
+        <img class="logo" src="qr-code.io:8000/workspace/QR/qr/templates/resources/images/crushed_logo_sm.png" alt="Crushed"/>
+        <div class="order-number">Order number: {{ fields.order_id }}</div>
         <h2>Subtotal: {{ fields.subtotal }}</h2>
-        <h2>Tip: $<span id="tip-amount">0.00</span></h2>
-        <button onclick="percent_tip(.15)">15%</button>
-        <button onclick="percent_tip(.20)">20%</button>
-        <button onclick="percent_tip(.25)">25%</button>
-        <h2>Total: $<span id="total">{{ fields.subtotal }}</span></h2>
+        <p>Add tip</p>
+        <div class="button-group-tip">
+            <button onclick="percent_tip(.15)">15%</button>
+            <button onclick="percent_tip(.20)">20%</button>
+            <button onclick="percent_tip(.25)">25%</button>
+            <br />
+            <button class="no-tip" onclick="percent_tip(.00)">0%</button>
+        </div>
+        <h3>Tip: $<span id="tip-amount">0.00</span></h3>
+        <hr>
+        <h1>Total: $<span id="total">{{ fields.subtotal }}</span></h1>
+
     </div>
     <div id="paypal-button-container"></div>
 </body>
