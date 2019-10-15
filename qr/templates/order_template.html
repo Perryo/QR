@@ -16,43 +16,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
     <style>
 
     body{
         margin:0 !important;
-        padding:0 !important;
+        padding:20px !important;
+        background: #D8E5EC;
+        font-family: 'Roboto Condensed', sans-serif;
 
     }
 
     .order {
-        max-width: 365px;
-        margin: 1rem auto 0;
-        padding:2rem 1rem;
+        max-width: 320px;
+        margin: auto;
+        padding:2rem 1rem .3rem 1rem;
         color: #3f3f3f;
         background:white;
         font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
         position: relative;
         text-align: center;
         transition: all .25s ease-in-out;
-        box-shadow: 0 0 50px rgba(0,0,0,.3);
-        border-radius:4px;
-}
+        box-shadow: 0 0 23px rgba(0,0,0,.2);
+        border-radius: 5px 5px 0 0;
+    }
+
+    table{
+        border: 0px;
+        margin:20px auto;
+        width: 250px;
+        font-weight:400;
+        color:#666;
+   }
+
+   td{
+    padding: 8px 0;
+    margin:0;
+   }
+
+   .less{
+        padding: 0px 0px;
+        margin:0;
+   }
+
+   .less h1{
+    margin:0;
+    padding:0;
+   }
 
 
-.jagged-paper {
-    height: 50px;
-    max-width: 350px;
-    background: url(/static/receipt-paper-jagged-edge-2.png) repeat-x 50% 80%;
-    background-size: 7% 40%;
-    margin: -26px auto 15px auto;
-    position: relative;
-    z-index: 999;
+   .left-align{
+        text-align:left;
+   }
 
+   .right-align{
+        text-align:right;
+   }
+
+   .center-align{
+    text-align:center;
+   }
+
+
+    .jagged-paper {
+        height: 50px;
+        max-width: 352px;
+        background: url(/static/receipt-paper-jagged-edge-2.png) repeat-x 0px 5px;
+        background-size: 7% 40%;
+        margin: -6px auto 0 auto;
+        position: relative;
+        z-index: 999;
     }
 
     .logo{
-        width: 230px;
-        height: 63px;
+        width: 250px;
+        height: 70px;
         background-color: #ccc;
         display: inline-block;
         background: #fff url(/static/crushed_logo_sm.png);
@@ -61,28 +99,50 @@
         background-position: center;
     }
 
+    .button-group-tip{
+        margin:40px -5px 0px -5px;
+        padding:0;
+    }
+
     .button-group-tip button{
-        border:1px solid #666;
-        border-radius:5px;
-        background:#dedede;
-        padding: 15px 20px;
-        color: #555;
+        border: 0px;
+        border-radius: 5px;
+        background: #dedede;
+        padding: 17px 20px;
         font-size: 1.3em;
-        font-weight:bold;
-        letter-spacing:-1px;
+        font-weight: bold;
+        letter-spacing: -1px;
+
     }
 
     button.no-tip{
-        color:#999;
         border:0;
+        color: #ccc;
+        font-size: .9rem;
         background:none;
+        letter-spacing:0px;
+        padding:20px 0 0 0;
+        display:none;
+    }
+
+
+    hr.dotted-light{
+        background:transparent;
+        height:1px;
+        border:1px dotted #ccc;
+        border-width:4px 0 0 0;
+    }
+
+    hr.dotted-heavy{
+        background:transparent;
+        height:5px;
+        border:5px dotted #FDC43A;
+        border-width:5px 0 0 0;
     }
 
     #paypal-button-container{
         max-width: 350px;
         margin: 0 auto;
-        padding: 0 20px;
-        width: 87%;
     }
 
 
@@ -92,19 +152,53 @@
 <body>
     <div class="order">
         <div class="logo"/></div>
-        <div class="order-number">Order number: {{ fields.order_id }}</div>
-        <h2>Subtotal: {{ fields.subtotal }}</h2>
-        <p>Add tip</p>
-        <div class="button-group-tip">
-            <button onclick="percent_tip(.15)">15%</button>
-            <button onclick="percent_tip(.20)">20%</button>
-            <button onclick="percent_tip(.25)">25%</button>
-            <br />
-            <button class="no-tip" onclick="percent_tip(.00)">0%</button>
-        </div>
-        <h3>Tip: $<span id="tip-amount">0.00</span></h3>
-        <hr>
-        <h1>Total: $<span id="total">{{ fields.subtotal }}</span></h1>
+
+        <table>
+
+            <tr>
+                <td class="left-align">Date:</td>
+                <td class="right-align">10-31-2019</td>
+            </tr>
+            <tr>
+                <td class="left-align">Order number:</td>
+                <td class="right-align">{{ fields.order_id }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="dotted-light" /></td>
+            </tr>
+            <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
+            </tr>
+
+
+
+            <tr>
+                <td colspan="2" >
+                    <div class="button-group-tip">
+                        <button onclick="percent_tip(.15)">15%</button>
+                        <button onclick="percent_tip(.20)">20%</button>
+                        <button onclick="percent_tip(.25)">25%</button>
+                        <br />
+                        <button class="no-tip" onclick="percent_tip(.00)">No tip</button>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="left-align"><strong>Tip:</strong></td>
+                <td class="right-align"><strong>$<span id="tip-amount">0.00</span></strong></td>
+            </tr>
+
+            <tr>
+                <td class="less" colspan="2"><hr class="dotted-heavy" /></td>
+            </tr>
+        <tr class="less">
+            <td class="left-align less"><h1>Total:</h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
+            </tr>
+        </table>
     </div>
     <div class="jagged-paper"></div>
 
