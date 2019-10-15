@@ -11,36 +11,54 @@
 
   gtag('config', 'UA-142501568-2');
 </script>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
     <style>
+
     body{
-        background:/*#adc6d6 #89beff*/ #ccf6ff;
+        margin:0 !important;
+        padding:0 !important;
+
     }
+
     .order {
-        margin: 3vh auto;
-        width: 80%;
-        max-width: 350px;
-        color: #3f3f3f;
-        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
+        max-width: 365px;
+        margin: 1rem auto 0;
         padding:2rem 1rem;
+        color: #3f3f3f;
+        background:white;
+        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
         position: relative;
         text-align: center;
         transition: all .25s ease-in-out;
         box-shadow: 0 0 50px rgba(0,0,0,.3);
+        border-radius:4px;
 }
 
+
+.jagged-paper {
+    height: 50px;
+    max-width: 350px;
+    background: url(/static/receipt-paper-jagged-edge-2.png) repeat-x 50% 80%;
+    background-size: 7% 40%;
+    margin: -26px auto 15px auto;
+    position: relative;
+    z-index: 999;
+
+    }
+
     .logo{
-        width: 250px;
-        height: 75px;
+        width: 230px;
+        height: 63px;
         background-color: #ccc;
         display: inline-block;
-        background:  #fff url("/static/sierra.jpg");
+        background: #fff url(/static/crushed_logo_sm.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
     .button-group-tip button{
@@ -73,7 +91,7 @@
 </head>
 <body>
     <div class="order">
-        <img class="logo" src="qr-code.io:8000/workspace/QR/qr/templates/resources/images/crushed_logo_sm.png" alt="Crushed"/>
+        <div class="logo"/></div>
         <div class="order-number">Order number: {{ fields.order_id }}</div>
         <h2>Subtotal: {{ fields.subtotal }}</h2>
         <p>Add tip</p>
@@ -87,8 +105,9 @@
         <h3>Tip: $<span id="tip-amount">0.00</span></h3>
         <hr>
         <h1>Total: $<span id="total">{{ fields.subtotal }}</span></h1>
-
     </div>
+    <div class="jagged-paper"></div>
+
     <div id="paypal-button-container"></div>
 </body>
 <script>
