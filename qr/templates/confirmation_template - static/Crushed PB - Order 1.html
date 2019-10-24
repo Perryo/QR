@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)http://127.0.0.1:8000/order/1 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script type="text/javascript" async="" src="./Crushed PB - Order 1_files/analytics.js"></script><script async="" src="./Crushed PB - Order 1_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-142501568-2');
+</script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Crushed PB - Order 1</title>
+    <script src="./Crushed PB - Order 1_files/js(1)"></script>
+    <link href="./Crushed PB - Order 1_files/css" rel="stylesheet">
+    <style>
+
+    body{
+        margin:0 !important;
+        padding:20px !important;
+        background: #D8E5EC;
+        font-family: 'Roboto Condensed', sans-serif;
+
+    }
+
+    .order {
+        max-width: 320px;
+        margin: auto;
+        padding:2rem 1rem .3rem 1rem;
+        color: #3f3f3f;
+        background:white;
+        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
+        position: relative;
+        text-align: center;
+        transition: all .25s ease-in-out;
+        box-shadow: 0 0 23px rgba(0,0,0,.2);
+        border-radius: 5px 5px 0 0;
+    }
+
+    table{
+        border: 0px;
+        margin:20px auto;
+        width: 250px;
+        font-weight:400;
+        color:#666;
+   }
+
+   td{
+    padding: 4px 0;
+    margin:0;
+   }
+
+   .less{
+        padding: 0px 0px;
+        margin:0;
+   }
+
+   .less h1{
+    margin:0;
+    padding:0;
+   }
+
+
+   .left-align{
+        text-align:left;
+   }
+
+   .right-align{
+        text-align:right;
+   }
+
+   .center-align{
+    text-align:center;
+   }
+
+
+    .jagged-paper {
+        height: 50px;
+        max-width: 352px;
+        background: url(/static/receipt-paper-jagged-edge-2.png) repeat-x 0px 5px;
+        background-size: 7% 40%;
+        margin: -6px auto 0 auto;
+        position: relative;
+        z-index: 999;
+    }
+
+    .logo{
+        width: 250px;
+        height: 70px;
+        background-color: #ccc;
+        display: inline-block;
+        background: #fff url(/static/crushed_logo_sm.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .button-group-tip{
+        margin:20px -5px 20px -5px;
+        padding:0;
+    }
+
+    .button-group-tip button{
+        border: 0px;
+        border-radius: 5px;
+        background: #dedede;
+        padding: 17px 20px;
+        font-size: 1.3em;
+        font-weight: bold;
+        letter-spacing: -1px;
+
+    }
+
+    button.no-tip{
+        border:0;
+        color: #ccc;
+        font-size: .9rem;
+        background:none;
+        letter-spacing:0px;
+        padding:20px 0 0 0;
+        display:none;
+    }
+
+
+    hr.dotted-light{
+        background:transparent;
+        height:1px;
+        border:1px dotted #ccc;
+        border-width:4px 0 0 0;
+    }
+
+    hr.dotted-heavy{
+        background:transparent;
+        height:5px;
+        border:5px dotted #FDC43A;
+        border-width:5px 0 0 0;
+    }
+
+    #paypal-button-container{
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .display-none{
+        display:none;
+        }
+
+    </style>
+
+<script src="./Crushed PB - Order 1_files/pptm.js" id="xo-pptm" async=""></script></head>
+<body>
+    <div class="order">
+        <div class="logo"></div>
+
+        <table>
+
+            <tbody><tr>
+                <td class="left-align">Date:</td>
+                <td class="right-align">10-31-2019</td>
+            </tr>
+            <tr>
+                <td class="left-align">Order number:</td>
+                <td class="right-align">1</td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="dotted-light"></td>
+            </tr>
+            <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>47.53</strong></td>
+            </tr>
+
+
+
+            <tr>
+                <td colspan="2">
+                    <div class="button-group-tip">
+                        <p>Add tip</p>
+                        <button onclick="percent_tip(.15)">15%</button>
+                        <button onclick="percent_tip(.20)">20%</button>
+                        <button onclick="percent_tip(.25)">25%</button>
+                        <br>
+                        <button class="no-tip" onclick="percent_tip(.00)">No tip</button>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="left-align"><strong>Tip:</strong></td>
+                <td class="right-align"><strong>$<span id="tip-amount">0.00</span></strong></td>
+            </tr>
+
+            <tr>
+                <td class="less" colspan="2"><hr class="dotted-heavy"></td>
+            </tr>
+        <tr class="less">
+            <td class="left-align less"><h1>Total:</h1></td>
+            <td class="right-align"><h1>$<span id="total">47.53</span></h1></td>
+            </tr>
+        </tbody></table>
+    </div>
+    <div class="jagged-paper"></div>
+
+    <div id="paypal-button-container"><div id="zoid-paypal-buttons-d777514d17_mdm6mza6mtq" class="paypal-buttons paypal-buttons-context-iframe paypal-buttons-label-undefined paypal-buttons-layout-vertical" style="height: 201px; transition: all 0.5s ease-in-out 0s;"><style>
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq {
+                        position: relative;
+                        display: inline-block;
+                        width: 100%;
+                        min-width: 200px;
+                        max-width: 750px;
+                        font-size: 0;
+                    }
+
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq > iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq > iframe.component-frame {
+                        z-index: 100;
+                    }
+
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq > iframe.prerender-frame {
+                        transition: opacity .2s linear;
+                        z-index: 200;
+                    }
+
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq > iframe.visible {
+                        opacity: 1;
+                    }
+
+                    #zoid-paypal-buttons-d777514d17_mdm6mza6mtq > iframe.invisible {
+                        opacity: 0;
+                        pointer-events: none;
+                    }
+                </style><iframe allowtransparency="true" title="paypal_buttons" allowpaymentrequest="allowpaymentrequest" scrolling="no" id="jsx-iframe-ed4e8b1584" class="component-frame visible" name="__zoid__paypal_buttons__eyJ1aWQiOiJ6b2lkLXBheXBhbC1idXR0b25zLWQ3Nzc1MTRkMTdfbWRtNm16YTZtdHEiLCJjb250ZXh0IjoiaWZyYW1lIiwidmVyc2lvbiI6IjlfMF8zNCIsImNoaWxkRG9tYWluIjoiaHR0cHM6Ly93d3cuc2FuZGJveC5wYXlwYWwuY29tIiwicGFyZW50RG9tYWluIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIiwidGFnIjoicGF5cGFsLWJ1dHRvbnMiLCJwYXJlbnQiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfSwicHJvcHMiOnsidHlwZSI6InJhdyIsInZhbHVlIjoie1wiY3JlYXRlT3JkZXJcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjlmMDhjMWJjNThfbWRtNm16YTZtdHFcIixcIm5hbWVcIjpcImNyZWF0ZU9yZGVyXCJ9fSxcIm9uQXBwcm92ZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiMjhkMDFiZjM0MF9tZG02bXphNm10cVwiLFwibmFtZVwiOlwib25BcHByb3ZlXCJ9fSxcInN0eWxlXCI6e1wibGF5b3V0XCI6XCJ2ZXJ0aWNhbFwiLFwiY29sb3JcIjpcImdvbGRcIixcInNoYXBlXCI6XCJyZWN0XCIsXCJ0YWdsaW5lXCI6ZmFsc2V9LFwiY29tcG9uZW50c1wiOltcImJ1dHRvbnNcIl0sXCJsb2NhbGVcIjp7XCJjb3VudHJ5XCI6XCJVU1wiLFwibGFuZ1wiOlwiZW5cIn0sXCJnZXRQcmVyZW5kZXJEZXRhaWxzXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI3ZjFmM2MzODI5X21kbTZtemE2bXRxXCIsXCJuYW1lXCI6XCJnZXRQcmVyZW5kZXJEZXRhaWxzXCJ9fSxcImdldFBvcHVwQnJpZGdlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJkZWVhOWMxYjhlX21kbTZtemE2bXRxXCIsXCJuYW1lXCI6XCJnZXRQb3B1cEJyaWRnZVwifX0sXCJjbGllbnRJRFwiOlwiQVVyYmFfRF9aalFwcGVIbXlJTUc1b2N4SWYtSFdWM0tPanJVT05aLUFMeGFQMlpRXzQ2bTVXMXg2RnUxVG05VWFBWEFDQm1pZmpyalkyOFZcIixcImVuYWJsZVRocmVlRG9tYWluU2VjdXJlXCI6ZmFsc2UsXCJjb3JyZWxhdGlvbklEXCI6XCIxODMxN2E4OTlmYzA4XCIsXCJzZXNzaW9uSURcIjpcIjlmOTUwMzE4Y2VfbWRtNm10cTZtdGNcIixcImJ1dHRvblNlc3Npb25JRFwiOlwiYjgyNTg1ODJlZl9tZG02bXphNm10cVwiLFwiZW52XCI6XCJzYW5kYm94XCIsXCJzdGFnZUhvc3RcIjpudWxsLFwiYXBpU3RhZ2VIb3N0XCI6bnVsbCxcImZ1bmRpbmdFbGlnaWJpbGl0eVwiOntcInBheXBhbFwiOntcImVsaWdpYmxlXCI6dHJ1ZX0sXCJ2ZW5tb1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiaXRhdVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiY3JlZGl0XCI6e1wiZWxpZ2libGVcIjp0cnVlfSxcInNlcGFcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcImlkZWFsXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJiYW5jb250YWN0XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJnaXJvcGF5XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJlcHNcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcInNvZm9ydFwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwibXliYW5rXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJwMjRcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcInppbXBsZXJcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcIndlY2hhdHBheVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwicGF5dVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwidHJ1c3RseVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiYmxpa1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwib3h4b1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwibWF4aW1hXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJib2xldG9cIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcImNhcmRcIjp7XCJlbGlnaWJsZVwiOnRydWUsXCJicmFuZGVkXCI6dHJ1ZSxcInZlbmRvcnNcIjp7XCJ2aXNhXCI6e1wiZWxpZ2libGVcIjp0cnVlfSxcIm1hc3RlcmNhcmRcIjp7XCJlbGlnaWJsZVwiOnRydWV9LFwiYW1leFwiOntcImVsaWdpYmxlXCI6dHJ1ZX0sXCJkaXNjb3ZlclwiOntcImVsaWdpYmxlXCI6dHJ1ZX0sXCJoaXBlclwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiZWxvXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJqY2JcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfX19fSxcInBsYXRmb3JtXCI6XCJtb2JpbGVcIixcInJlbWVtYmVyZWRcIjpbXSxcInJlbWVtYmVyXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCI5ZWM3YmI1YjU2X21kbTZtemE2bXRxXCIsXCJuYW1lXCI6XCJyZW1lbWJlclwifX0sXCJjdXJyZW5jeVwiOlwiVVNEXCIsXCJpbnRlbnRcIjpcImNhcHR1cmVcIixcImNvbW1pdFwiOnRydWUsXCJ2YXVsdFwiOmZhbHNlLFwiZGlzYWJsZUZ1bmRpbmdcIjpbXSxcImRpc2FibGVDYXJkXCI6W10sXCJtZXJjaGFudElEXCI6W10sXCJjc3BcIjp7fSxcImdldFBhZ2VVcmxcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImMxZTE0ZWM2MjNfbWRtNm16YTZtdHFcIixcIm5hbWVcIjpcImdldFBhZ2VVcmxcIn19LFwiZGVidWdcIjpmYWxzZSxcInRlc3RcIjp7XCJhY3Rpb25cIjpcImNoZWNrb3V0XCJ9fSJ9LCJleHBvcnRzIjoie1wiaW5pdFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiN2Y5MTlmY2QxNV9tZG02bXphNm10cVwiLFwibmFtZVwiOlwiclwifX0sXCJjbG9zZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiNTVhNjllZWViM19tZG02bXphNm10cVwiLFwibmFtZVwiOlwiY2xvc2VcIn19LFwiY2hlY2tDbG9zZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiY2FlYmRiMjc0ZF9tZG02bXphNm10cVwiLFwibmFtZVwiOlwiY2hlY2tDbG9zZVwifX0sXCJyZXNpemVcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcImZjM2NjMWUyNDRfbWRtNm16YTZtdHFcIixcIm5hbWVcIjpcInJlc2l6ZVwifX0sXCJvbkVycm9yXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCIzNTU5ODk1YWE3X21kbTZtemE2bXRxXCIsXCJuYW1lXCI6XCJ0XCJ9fSxcInNob3dcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcIjg3NWI4NDg0NjBfbWRtNm16YTZtdHFcIixcIm5hbWVcIjpcInNob3dcIn19LFwiaGlkZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwiOTA0MDY2MGU2OV9tZG02bXphNm10cVwiLFwibmFtZVwiOlwiaGlkZVwifX19In0=__" style="background-color: transparent; border: none;" src="./Crushed PB - Order 1_files/saved_resource.html"></iframe></div></div>
+
+<script>
+var grandTotal = 47.53;
+    var percent_tip = function(percent){
+            var subtotal = parseFloat(47.53).toFixed(2);
+            var tip = (subtotal*percent).toFixed(2);
+            var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
+            document.getElementById('tip-amount').textContent = tip;
+            document.getElementById('total').textContent = total;
+            grandTotal = total;
+        }
+
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // Set up the transaction
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: grandTotal
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+        //TODO: Do this server side https://developer.paypal.com/docs/checkout/integrate/#6-verify-the-transaction
+            // Capture the funds from the transaction
+            return actions.order.capture().then(function(details) {
+                // Show a success message to your buyer
+                alert('Transaction completed by ' + details.payer.name.given_name);
+                // Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                });
+            });
+        }
+    }).render('#paypal-button-container');
+
+</script>
+</body></html>
