@@ -3,14 +3,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-<script type="text/javascript" async="" src="./Crushed PB - Order 1_files/analytics.js"></script><script async="" src="./Crushed PB - Order 1_files/js"></script>
+<script type="text/javascript" async="" src="./Crushed_PB_includes/analytics.js"></script><script async="" src="./Crushed_PB_includes/js"></script>
 
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Crushed PB - Order 1</title>
-    <script src="./Crushed PB - Order 1_files/js(1)"></script>
-    <link href="./Crushed PB - Order 1_files/css" rel="stylesheet">
+    <script src="./Crushed_PB_includes/js(1)"></script>
+    <link href="./Crushed_PB_includes/css" rel="stylesheet">
     <style>
 
     body{
@@ -77,7 +77,7 @@
     .jagged-paper {
         height: 50px;
         max-width: 352px;
-        background: url('Crushed PB - Order 1_files/receipt-paper-jagged-edge-2.png') repeat-x 0px 5px;
+        background: url('Crushed_PB_includes/receipt-paper-jagged-edge-2.png') repeat-x 0px 5px;
         background-size: 7% 40%;
         margin: -6px auto 0 auto;
         position: relative;
@@ -89,7 +89,7 @@
         height: 70px;
         background-color: #ccc;
         display: inline-block;
-        background: #fff url('Crushed PB - Order 1_files/crushed_logo_sm.png');
+        background: #fff url('Crushed_PB_includes/crushed_logo_sm.png');
         background-size: 100%;
         background-repeat: no-repeat;
         background-position: center;
@@ -141,26 +141,65 @@
         margin: 0 auto;
     }
 
-    .success-frame h3{
-        color:#37D3B7;
-        display:inline;
+    .success-frame {
     }
+
+
+    .success-frame h2{
+        font-size:1.4rem;
+        margin-bottom:35px;
+    }
+
+
+
+
+    .success-frame h3{
+        padding-top:20px;
+        color:#37D3B7;
+        font-size:1.5rem;
+    }
+
+
+    .paid h3{
+        padding:20px 10px;
+        color:#37D3B7;
+        font-size:3rem;
+        border:8px solid;
+        border-radius: 9px;
+        transform: rotate(330deg);
+        text-transform:uppercase;
+        margin:50px 20px;
+    }
+
 
     .success-graphic{
         height: 80px;
-        background:url('Crushed PB - Order 1_files/checkmark5.png');
-        background-size: 28%;
+        background:url('Crushed_PB_includes/checkmark5.png');
+        background-size: 30%;
         background-repeat: no-repeat;
         background-position: center;
     }
-
+/*
     .powered-by-paypal{
         height: 80px;
-        background:url('Crushed PB - Order 1_files/powered-by-paypal.png');
-        /* background-image:url('Crushed PB - Order 1_files/powered-by-paypal.png'); */
-        background-size: 28%;
+        background:url('Crushed_PB_includes/powered-by-paypal.png');
+        background-size:50%;
         background-repeat: no-repeat;
         background-position: center;
+    }
+*/
+    p.powered-by-qrcodeio{
+        max-width: 320px;
+        margin: 60px auto 0;
+        color: #999;
+        text-align:center;
+        font-size:.9rem;
+    }
+
+    .powered-by-qrcodeio a{
+        text-decoration:none;
+        color: #00a587;
+
     }
 
     .display-none{
@@ -169,7 +208,7 @@
 
     </style>
 
-<script src="./Crushed PB - Order 1_files/pptm.js" id="xo-pptm" async=""></script></head>
+<script src="./Crushed_PB_includes/pptm.js" id="xo-pptm" async=""></script></head>
 <body>
     <div class="order">
         <div class="logo"></div>
@@ -209,29 +248,17 @@
             </tr>
         </tbody></table>
 
-
-        <div class="success-frame">
-
+        <div class="success-frame display-none">
             <h3>Payment Successful</h3>
             <div class="success-graphic"></div>
             <h2>Thank you for eating at Crushed!</h2>
-           <div class="powered-by-paypal"></div>
-
         </div>
 
-
+        <div class="paid ">
+            <h3>Paid</h3>
+            <h2>Thank you for eating at Crushed!</h2>
+        </div>
     </div>
-
-
-
     <div class="jagged-paper"></div>
-
-<div class="">
-
-
-
-</div>
-
-
-
+    <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/?src=receipt&order_id=1"> QR-Code.io</a></p>
 </body></html>
