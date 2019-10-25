@@ -72,6 +72,8 @@
    }
 
 
+
+
     .jagged-paper {
         height: 50px;
         max-width: 352px;
@@ -139,10 +141,24 @@
         margin: 0 auto;
     }
 
-    .success-animation{
-        height: 250px;
+    .success-frame h3{
+        color:#37D3B7;
+        display:inline;
+    }
+
+    .success-graphic{
+        height: 80px;
         background:url('Crushed PB - Order 1_files/checkmark5.png');
-        background-size: 100%;
+        background-size: 28%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .powered-by-paypal{
+        height: 80px;
+        background:url('Crushed PB - Order 1_files/powered-by-paypal.png');
+        /* background-image:url('Crushed PB - Order 1_files/powered-by-paypal.png'); */
+        background-size: 28%;
         background-repeat: no-repeat;
         background-position: center;
     }
@@ -196,11 +212,10 @@
 
         <div class="success-frame">
 
-            <h3>Payment confirmed.</h3>
-            <div class="success-animation"></div>
-            <p>A receipt has been sent via Paypal</p>
-
-            <h2>Thank you for eating at Crushed and here's a $5 coupon for next time you come.</h2>
+            <h3>Payment Successful</h3>
+            <div class="success-graphic"></div>
+            <h2>Thank you for eating at Crushed!</h2>
+           <div class="powered-by-paypal"></div>
 
         </div>
 
