@@ -17,142 +17,10 @@
     <title>Crushed PB - Order {{ fields.order_id }}</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
-    <style>
-
-    body{
-        margin:0 !important;
-        padding:20px !important;
-        background: #D8E5EC;
-        font-family: 'Roboto Condensed', sans-serif;
-
-    }
-
-    .order {
-        max-width: 320px;
-        margin: auto;
-        padding:2rem 1rem .3rem 1rem;
-        color: #3f3f3f;
-        background:white;
-        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
-        position: relative;
-        text-align: center;
-        transition: all .25s ease-in-out;
-        box-shadow: 0 0 23px rgba(0,0,0,.2);
-        border-radius: 5px 5px 0 0;
-    }
-
-    table{
-        border: 0px;
-        margin:20px auto;
-        width: 250px;
-        font-weight:400;
-        color:#666;
-   }
-
-   td{
-    padding: 4px 0;
-    margin:0;
-   }
-
-   .less{
-        padding: 0px 0px;
-        margin:0;
-   }
-
-   .less h1{
-    margin:0;
-    padding:0;
-   }
-
-
-   .left-align{
-        text-align:left;
-   }
-
-   .right-align{
-        text-align:right;
-   }
-
-   .center-align{
-    text-align:center;
-   }
-
-
-    .jagged-paper {
-        height: 50px;
-        max-width: 352px;
-        background: url(/static/receipt-paper-jagged-edge-2.png) repeat-x 0px 5px;
-        background-size: 7% 40%;
-        margin: -6px auto 0 auto;
-        position: relative;
-        z-index: 999;
-    }
-
-    .logo{
-        width: 250px;
-        height: 70px;
-        background-color: #ccc;
-        display: inline-block;
-        background: #fff url(/static/crushed_logo_sm.png);
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    .button-group-tip{
-        margin:20px -5px 20px -5px;
-        padding:0;
-    }
-
-    .button-group-tip button{
-        border: 0px;
-        border-radius: 5px;
-        background: #dedede;
-        padding: 17px 20px;
-        font-size: 1.3em;
-        font-weight: bold;
-        letter-spacing: -1px;
-
-    }
-
-    button.no-tip{
-        border:0;
-        color: #ccc;
-        font-size: .9rem;
-        background:none;
-        letter-spacing:0px;
-        padding:20px 0 0 0;
-        display:none;
-    }
-
-
-    hr.dotted-light{
-        background:transparent;
-        height:1px;
-        border:1px dotted #ccc;
-        border-width:4px 0 0 0;
-    }
-
-    hr.dotted-heavy{
-        background:transparent;
-        height:5px;
-        border:5px dotted #FDC43A;
-        border-width:5px 0 0 0;
-    }
-
-    #paypal-button-container{
-        max-width: 350px;
-        margin: 0 auto;
-    }
-
-    .display-none{
-        display:none;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
 
 </head>
-<body>
+<body class="unpaid">
     <div class="order">
         <div class="logo"/></div>
 
@@ -176,7 +44,7 @@
 
 
 
-            <tr>
+            <tr class="tip">
                 <td colspan="2" >
                     <div class="button-group-tip">
                         <p>Add tip</p>
@@ -203,10 +71,25 @@
             <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
             </tr>
         </table>
+
+        <div class="success">
+            <h3>Paid</h3>
+            <h2>Thank you for eating at Crushed!</h2>
+        </div>
+
+
     </div>
     <div class="jagged-paper"></div>
 
     <div id="paypal-button-container"></div>
+
+    <footer>
+        <p class="protip"">Protip: Your can leave whenever you want. No need to let your server know.</p>
+        <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/?src=receipt&order_id=1"> QR-Code.io</a></p>
+    </footer>
+
+
+
 </body>
 <script>
 var grandTotal = {{ fields.subtotal }};
