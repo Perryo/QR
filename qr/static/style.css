@@ -163,8 +163,19 @@
 
 /* changes to page pre and post payment */
 
-    .unpaid .success,
-    .unpaid footer{display:none;}
-
+    .unpaid, .success,
+    .unpaid footer {
+        display:none;
+        }
+    #paid {
+        position: absolute;
+        top: 50%;
+    }
+    #paid > h2 {
+        margin-top: 130px;
+    }
+    footer {
+        margin-top: 60px;
+    }
     .paid .tip,
     .paid #paypal-button-container{display:none;}
