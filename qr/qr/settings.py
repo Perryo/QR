@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import logging.config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -123,30 +122,3 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
-
-LOGGING_CONFIG = None
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'default': {
-            'format': "[%(asctime)s] [%(name)s:%(funcName)s:%(lineno)s] %(message)s",
-            'datefmt': "%H:%M:%S"
-        }
-    },
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'qr.log',
-            'formatter': 'default'
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'propagate': True,
-            'level': 'INFO',
-        },
-    },
-})

@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142501568-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-142501568-2');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
-    <style>
-    .order {
-        margin: 20px auto;
-        width: 80%;
-        max-width: 750px;
-        background-image: url("/static/sierra.jpg");
-        background-repeat: repeat-x;
-        color: #3f3f3f;
-        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
-        letter-spacing: 1px;
-        padding: 3rem 0;
-        position: relative;
-        text-align: center;
-        transition: all .25s ease-in-out;
-    }
-    #paypal-button-container{
-        max-width: 750px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
     <div class="order">
-        <h1>Your order: {{ fields.order_id }}</h1>
-        <h2>Subtotal: {{ fields.subtotal }}</h2>
-        <h2>Tip: $<span id="tip-amount">0.00</span></h2>
-        <button onclick="percent_tip(.15)">15%</button>
-        <button onclick="percent_tip(.20)">20%</button>
-        <button onclick="percent_tip(.25)">25%</button>
-        <h2>Total: $<span id="total">{{ fields.subtotal }}</span></h2>
+        <div class="logo"/></div>
+
+        <table id="unpaid">
+
+            <tr>
+                <td class="left-align">Date:</td>
+                <td class="right-align">10-31-2019</td>
+            </tr>
+            <tr>
+                <td class="left-align">Order number:</td>
+                <td class="right-align">{{ fields.order_id }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="dotted-light" /></td>
+            </tr>
+            <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
+            </tr>
+
+
+
+            <tr id="tip" class="tip">
+                <td colspan="2" >
+                    <div class="button-group-tip">
+                        <p>Add tip</p>
+                        <button onclick="percent_tip(.15)">15%</button>
+                        <button onclick="percent_tip(.20)">20%</button>
+                        <button onclick="percent_tip(.25)">25%</button>
+                        <br />
+                        <button class="no-tip" onclick="percent_tip(.00)">No tip</button>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="left-align"><strong>Tip:</strong></td>
+                <td class="right-align"><strong>$<span id="tip-amount">0.00</span></strong></td>
+            </tr>
+
+            <tr>
+                <td class="less" colspan="2"><hr class="dotted-heavy" /></td>
+            </tr>
+        <tr class="less">
+            <td class="left-align less"><h1>Total:</h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
+            </tr>
+        </table>
+
+        <div id="paid" class="success">
+            <h3>Paid</h3>
+            <h2>Thank you for eating at Crushed!</h2>
+        </div>
+
+
     </div>
+    <div class="jagged-paper"></div>
+
     <div id="paypal-button-container"></div>
+
+    <footer id="paid-footer">
+        <p class="protip"">Protip: Your can leave whenever you want. No need to let your server know.</p>
+        <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/"> QR-Code.io</a></p>
+    </footer>
+
+
+
 </body>
 <script>
-var grandTotal = {{ fields.subtotal }};
+    var grandTotal = {{ fields.subtotal }};
     var percent_tip = function(percent){
             var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
             var tip = (subtotal*percent).toFixed(2);
@@ -66,8 +116,12 @@ var grandTotal = {{ fields.subtotal }};
         //TODO: Do this server side https://developer.paypal.com/docs/checkout/integrate/#6-verify-the-transaction
             // Capture the funds from the transaction
             return actions.order.capture().then(function(details) {
-                // Show a success message to your buyer
-                alert('Transaction completed by ' + details.payer.name.given_name);
+                // Hide unpaid
+                document.getElementById("tip").style.display = 'none';
+                document.getElementById("paypal-button-container").style.display = 'none';
+                // Show paid
+                document.getElementById("paid").style.display = 'block';
+                document.getElementById("paid-footer").style.display = 'block';
                 // Call your server to save the transaction
                 return fetch('/paypal-transaction-complete', {
                     method: 'post',
