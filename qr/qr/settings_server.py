@@ -62,17 +62,16 @@ WSGI_APPLICATION = 'qr.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-if 'RDS_HOSTNAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
+DATABASES = {
+	'default': {
+   		'ENGINE': 'django.db.backends.mysql',
+    		'NAME': 'qr_prod_1',
+   		'USER': 'qr_admin',
+   		'PASSWORD': 'qrPortal5%',
+    		'HOST': 'qr-prod.cm4llw1x7eh3.us-east-2.rds.amazonaws.com',
+    		'PORT': '3306',
+	}
+}
 
 
 # Password validation
@@ -110,10 +109,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
+STATIC_ROOT = '/home/ec2-user/QR/qr/static/'
 STATIC_URL = '/static/'
 
 LOGGING_CONFIG = None
