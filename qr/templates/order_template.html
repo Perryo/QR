@@ -16,7 +16,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crushed PB - Order {{ fields.order_id }}</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
@@ -24,14 +23,9 @@
         <div class="logo"/></div>
 
         <table id="unpaid">
-
             <tr>
-                <td class="left-align">Date:</td>
-                <td class="right-align">10-31-2019</td>
-            </tr>
-            <tr>
-                <td class="left-align">Order number:</td>
-                <td class="right-align">{{ fields.order_id }}</td>
+                <td class="left-align">Check # {{ fields.order_id }}</td>
+                <td class="right-align">10/31/19</td>
             </tr>
             <tr>
                 <td colspan="2"><hr class="dotted-light" /></td>
@@ -46,7 +40,7 @@
             <tr id="tip" class="tip">
                 <td colspan="2" >
                     <div class="button-group-tip">
-                        <p>Add tip</p>
+                        <div>Add tip</div>
                         <button onclick="percent_tip(.15)">15%</button>
                         <button onclick="percent_tip(.20)">20%</button>
                         <button onclick="percent_tip(.25)">25%</button>
@@ -80,10 +74,11 @@
     </div>
     <div class="jagged-paper"></div>
 
+    <div id="apply-pay-button"></div>
     <div id="paypal-button-container"></div>
 
     <footer id="paid-footer">
-        <p class="protip"">Protip: Your can leave whenever you want. No need to let your server know.</p>
+        <p class="confirmation">We've let your server know that you've paid. Thank you for eating at Crushed!</p>
         <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/"> QR-Code.io</a></p>
     </footer>
 

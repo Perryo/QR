@@ -1,19 +1,18 @@
 
     body{
         margin:0 !important;
-        padding:20px !important;
+        padding:30px !important;
         background: #D8E5EC;
-        font-family: 'Roboto Condensed', sans-serif;
+        font-family:Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
 
     }
 
     .order {
         max-width: 320px;
         margin: auto;
-        padding:2rem 1rem .3rem 1rem;
+        padding:2rem 1rem;
         color: #3f3f3f;
         background:white;
-        font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
         position: relative;
         text-align: center;
         transition: all .25s ease-in-out;
@@ -23,14 +22,14 @@
 
     table{
         border: 0px;
-        margin:20px auto;
+        margin: 10px auto 0 auto;
         width: 250px;
         font-weight:400;
         color:#666;
    }
 
     td{
-        padding: 4px 0;
+        padding:0;
         margin:0;
     }
 
@@ -59,11 +58,11 @@
 
 
     .jagged-paper {
-        height: 50px;
+        height: 25px;
         max-width: 352px;
         background: url('receipt-paper-jagged-edge-2.png') repeat-x 0px 5px;
-        background-size: 7% 40%;
-        margin: -6px auto 0 auto;
+        background-size: 9% 100%;
+        margin: -6px auto 15px auto;
         position: relative;
         z-index: 999;
     }
@@ -80,8 +79,13 @@
     }
 
     .button-group-tip{
-        margin:20px -5px 20px -5px;
+        margin:5px 0 20px 0;
         padding:0;
+        white-space:nowrap;
+    }
+
+    .button-group-tip div{
+        padding:0 0 10px 0;
     }
 
     .button-group-tip button{
@@ -120,6 +124,15 @@
         border-width:5px 0 0 0;
     }
 
+    #apply-pay-button{
+        max-width: 350px;
+        margin: 0 auto 10px auto;
+        background:url('ApplePay-Button_2x.png');
+        background-size:100%;
+        background-repeat: no-repeat;
+        height:60px;
+    }
+
     #paypal-button-container{
         max-width: 350px;
         margin: 0 auto;
@@ -147,14 +160,19 @@
         font-size:.9rem;
     }
 
+
+
+    .confirmation{
+        text-align:center;
+        color:#3e3e3e;
+        padding:0 10px;
+        font-size:24px;
+    }
+
     .powered-by-qrcodeio a{
         text-decoration:none;
         color: #00a587;
 
-    }
-
-    .protip{
-        text-align:center; color:#999;padding:0 40px;
     }
 
     .display-none{
@@ -171,11 +189,30 @@
         position: absolute;
         top: 50%;
     }
+    .paid-footer{
+    }
+
     #paid > h2 {
         margin-top: 130px;
     }
+/*
     footer {
         margin-top: 60px;
     }
+*/
+
     .paid .tip,
     .paid #paypal-button-container{display:none;}
+
+    .confirmation{
+        text-align:center;
+        color:#3e3e3e;
+        padding:0 10px;
+        font-size:24px;
+    }
+
+    .powered-by-qrcodeio a{
+        text-decoration:none;
+        color: #00a587;
+
+    }
