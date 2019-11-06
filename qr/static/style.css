@@ -1,14 +1,17 @@
 
     body{
         margin:0 !important;
-        padding:30px !important;
+        padding:25px !important;
         background: #D8E5EC;
         font-family:Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
 
     }
 
+
+
     .order {
         max-width: 320px;
+        min-height:353px;
         margin: auto;
         padding:2rem 1rem;
         color: #3f3f3f;
@@ -139,6 +142,14 @@
     }
 
 
+    /* --------- loading modal --------- */
+
+#loading{}
+
+
+
+    /* --------- success --------- */
+
     .success h3{
         color: #37D3B7;
         font-size: 3rem;
@@ -146,10 +157,12 @@
         border-radius: 900px;
         transform: rotate(330deg);
         text-transform: uppercase;
-        margin: -25px 80px;
-        padding: 34px 0;
+        margin: 20px 80px;
+        padding: 30px 4px;
         text-decoration: underline overline;
     }
+
+
 
 
     p.powered-by-qrcodeio{
@@ -160,14 +173,6 @@
         font-size:.9rem;
     }
 
-
-
-    .confirmation{
-        text-align:center;
-        color:#3e3e3e;
-        padding:0 10px;
-        font-size:24px;
-    }
 
     .powered-by-qrcodeio a{
         text-decoration:none;
@@ -181,28 +186,15 @@
 
 /* changes to page pre and post payment */
 
-    .unpaid, .success,
-    .unpaid footer {
-        display:none;
-        }
-    #paid {
-        position: absolute;
-        top: 50%;
-    }
-    .paid-footer{
-    }
 
-    #paid > h2 {
-        margin-top: 130px;
+
+    #paid-footer{
+        display:block;
     }
-/*
-    footer {
-        margin-top: 60px;
-    }
-*/
 
     .paid .tip,
-    .paid #paypal-button-container{display:none;}
+    .paid #paypal-button-container,
+    .paid #apply-pay-button{display:none;}
 
     .confirmation{
         text-align:center;
@@ -216,3 +208,9 @@
         color: #00a587;
 
     }
+
+
+    .unpaid, .success,
+    .unpaid footer {
+        display:none;
+        }
