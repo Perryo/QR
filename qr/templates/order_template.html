@@ -67,7 +67,7 @@
         </table>
 
         <div id="paid" class="success">
-            <h3>Paid</h3>
+            <div id="stamp">Paid</div>
             <h2>Thank you for eating at Crushed!</h2>
         </div>
 
@@ -84,6 +84,16 @@
     </footer>
 
 
+<!-- modal and loader - START -->
+<span id="loader">
+    <div class="page-background"></div>
+    <div class="modal-box">
+        <h1>Processing your order</h1>
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</span>
+
+<!-- modal and loader - END -->
 
 </body>
 <script>
@@ -99,6 +109,11 @@
 
     paypal.Buttons({
         createOrder: function(data, actions) {
+
+            // Show Loader Modal and hide apple pay
+                document.getElementById("loader").style.display = 'inherit';
+                document.getElementById("apply-pay-button").style.display = 'none';
+
             // Set up the transaction
             return actions.order.create({
                 purchase_units: [{
@@ -115,6 +130,10 @@
                 // Hide unpaid
                 document.getElementById("tip").style.display = 'none';
                 document.getElementById("paypal-button-container").style.display = 'none';
+
+                 // Hide loader modal
+                document.getElementById("loader").style.display = 'none';
+
                 // Show paid
                 document.getElementById("paid").style.display = 'block';
                 document.getElementById("paid-footer").style.display = 'block';

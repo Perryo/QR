@@ -10,7 +10,7 @@
 
 
     .order {
-        max-width: 320px;
+        max-width: 350px;
         min-height:353px;
         margin: auto;
         padding:30px 0;
@@ -144,25 +144,104 @@
 
     /* --------- loading modal --------- */
 
-#loading{}
+.page-background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 999;
+    background-color: rgba(0,0,0,.5);
+}
+
+.modal-box{
+    padding: 25px 30px 50px 30px;
+    color: #3f3f3f;
+    font-size: .6rem;
+    background: white;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    z-index: 99999;
+    position: absolute;
+    top: 20vh;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    min-width: 200px;
+    white-space: nowrap;
+ }
+
+ .modal-box h1{
+    font-weight: 400;
+    color: #4c4c4c;
+    font-size: 22px;
+ }
+
+
+#loader{
+    display:none;
+}
+
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  margin: 6px;
+  border: 6px solid red;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #0ff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 
 
     /* --------- success --------- */
 
-    .success h3{
+    #stamp{
         color: #37D3B7;
         font-size: 3rem;
         border: 8px double;
         border-radius: 900px;
         transform: rotate(330deg);
         text-transform: uppercase;
-        margin: 20px 80px;
-        padding: 30px 4px;
+        margin: 12px 96px;
+        padding: 30px 0;
         text-decoration: underline overline;
     }
 
-
+/* On screens that are 400px or less, set the background color to blue */
+@media screen and (min-width: 400px) {
+  #stamp{
+    margin: 0 110px;
+  }
+}
 
 
     p.powered-by-qrcodeio{
