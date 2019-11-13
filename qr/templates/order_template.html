@@ -90,7 +90,7 @@
         <div id="card-errors" role="alert"></div>
       </div>
 
-      <button id="stripe-submit">Submit Payment</button>
+      <button id="stripe-submit">Pay with Card</button>
     </form>
     <!-- For browser or OS saved payments -->
     <div id="payment-request-button">
@@ -127,6 +127,7 @@
         // Show paid
         document.getElementById("paid").style.display = 'block';
         document.getElementById("paid-footer").style.display = 'block';
+        document.getElementById("protip").style.display = 'block';
     }
     else {
         /* STRIPE CARD */
@@ -200,7 +201,7 @@
           currency: 'usd',
           total: {
             label: 'Demo total',
-            amount: 1000,
+            amount: 1,
           },
           requestPayerName: true,
           requestPayerEmail: true,
@@ -263,6 +264,7 @@
                     // Show paid
                     document.getElementById("paid").style.display = 'block';
                     document.getElementById("paid-footer").style.display = 'block';
+                    document.getElementById("protip").style.display = 'block';
                     // Call your server to save the transaction
                     return fetch('/paypal-transaction-complete', {
                         method: 'post',
