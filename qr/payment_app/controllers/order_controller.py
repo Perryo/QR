@@ -8,12 +8,13 @@ from payment_app.models import Order
 
 stripe.api_key = 'sk_test_jk6W0zrSFSnM4AcsN4hp5vAH'
 
+
 def handle_charge(request):
     # Token is created using Checkout or Elements!
     # Get the payment token ID submitted by the form:
     token = request.POST.get('stripeToken')
     order_id = request.POST.get('orderId')
-    amount = request.POST.get('amount')
+    amount = request.POST.get('amount').replace('.','')
 
     if token:
         charge = stripe.Charge.create(
