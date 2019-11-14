@@ -127,15 +127,8 @@
         border-width:5px 0 0 0;
     }
 
-    #apply-pay-button{
-        max-width: 350px;
-        margin: 0 auto 10px auto;
-        background:url('ApplePay-Button_2x.png');
-        background-size:100%;
-        background-repeat: no-repeat;
-        height:60px;
-    }
-
+    #payment-request-button.StripeElement,
+    #payment-form,
     #paypal-button-container{
         max-width: 350px;
         margin: 0 auto;
@@ -293,3 +286,60 @@
     .unpaid footer {
         display:none;
         }
+
+/**
+ * Stripe
+ */
+#payment-request-button.StripeElement {
+  padding: 0; /* For Apple Pay */
+  margin: 15px auto;
+}
+
+.StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+#stripe-submit {
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    background: #32325d;
+    white-space: nowrap;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-decoration: none;
+    -webkit-transition: all 150ms ease;
+    transition: all 150ms ease;
+    margin: 15px auto 0 auto;
+}

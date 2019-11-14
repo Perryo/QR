@@ -2,13 +2,6 @@
 *.idea
 migrations/
 __pycache__
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-qr/resources/.DS_Store
-.DS_Store
-=======
->>>>>>> jeremy
 *.fish
 *.csh
 *.7
@@ -22,9 +15,8 @@ venv/bin/python
 venv/bin/python3
 venv/bin/sqlformat
 venv/pyvenv.cfg
-<<<<<<< HEAD
-=======
 .DS_Store
 qr/.DS_Store
->>>>>>> Stashed changes
->>>>>>> jeremy
+.gitsecret/keys/random_seed
+!*.secret
+qr/resources/credentials.json

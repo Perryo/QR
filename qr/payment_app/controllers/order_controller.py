@@ -4,17 +4,20 @@ from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
 from django.core import serializers
 import json
-from payment_app.models import Order
 
-stripe.api_key = 'sk_test_jk6W0zrSFSnM4AcsN4hp5vAH'
+from payment_app import apps
+from payment_app.models import Order
 
 
 def handle_charge(request):
+    if not stripe.api_key:
+        stripe.api_key = apps.STRIPE_API_KEY
     # Token is created using Checkout or Elements!
     # Get the payment token ID submitted by the form:
     token = request.POST.get('stripeToken')
     order_id = request.POST.get('orderId')
-    amount = request.POST.get('amount').replace('.','')
+    # TODO: Change to tip, lookup amount
+    amount = request.POST.get('amount').replace('.', '')
 
     if token:
         charge = stripe.Charge.create(

@@ -1,3 +1,4 @@
+import json
 import os
 import logging.config
 
@@ -9,7 +10,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0@&$993^-tjygw$x0=idtw^ain%*^dgb$e4af7250qw^qgmhjt'
+with open(os.path.join('resources', 'credentials.json')) as json_file:
+    data = json.load(json_file)
+
+SECRET_KEY = data.get('secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -63,14 +67,14 @@ WSGI_APPLICATION = 'qr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
-	'default': {
-   		'ENGINE': 'django.db.backends.mysql',
-    		'NAME': 'qr_prod_1',
-   		'USER': 'qr_admin',
-   		'PASSWORD': 'qrPortal5%',
-    		'HOST': 'qr-prod.cm4llw1x7eh3.us-east-2.rds.amazonaws.com',
-    		'PORT': '3306',
-	}
+    'default': {
+        'ENGINE': data.get('db_engine'),
+        'NAME': data.get('db_name'),
+        'USER': data.get('db_user'),
+        'PASSWORD': data.get('db_password'),
+        'HOST': data.get('db_host'),
+        'PORT': data.get('db_port'),
+    }
 }
 
 
