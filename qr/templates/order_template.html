@@ -17,7 +17,7 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V&disable-funding=credit,card"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets-receipt/style.css">
 </head>
 <body>
     <div class="order">
@@ -75,11 +75,20 @@
 
     </div>
     <div class="jagged-paper"></div>
-     <!-- For card payments -->
+
+
+     <!-- For browser or OS saved payments -->
+    <div id="payment-request-button">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+    <div id="paypal-button-container"></div>
+
+
+    <!-- For card payments -->
     <form action="/charge" method="post" id="payment-form">
       <div class="form-row">
         <label for="card-element">
-          Credit or debit card
+          Credit or debit cards
         </label>
         <div id="card-element">
           <!-- A Stripe Element will be inserted here. -->
@@ -91,11 +100,11 @@
 
       <button id="stripe-submit">Pay with Card</button>
     </form>
-    <!-- For browser or OS saved payments -->
-    <div id="payment-request-button">
-      <!-- A Stripe Element will be inserted here. -->
-    </div>
-    <div id="paypal-button-container"></div>
+
+
+
+
+
 
     <footer id="paid-footer" class="success">
 
