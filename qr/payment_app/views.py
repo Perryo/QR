@@ -10,8 +10,12 @@ def index(request):
     return HttpResponse(template.render())
 
 
-def charge(request):
-    return order_controller.handle_charge(request)
+def stripe_charge(request):
+    return order_controller.handle_stripe_charge(request)
+
+
+def paypal_charge(request):
+    return order_controller.handle_paypal_charge(request)
 
 
 @require_GET

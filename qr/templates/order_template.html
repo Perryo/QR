@@ -17,7 +17,7 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V&disable-funding=credit,card"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets-receipt/style.css">
 </head>
 <body>
     <div class="order">
@@ -55,7 +55,7 @@
 
             <tr>
                 <td class="left-align"><strong>Tip:</strong></td>
-                <td class="right-align"><strong>$<span id="tip-amount">0.00</span></strong></td>
+                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>
             </tr>
 
             <tr>
@@ -63,7 +63,7 @@
             </tr>
         <tr class="less">
             <td class="left-align less"><h1>Total:</h1></td>
-            <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.total }}</span></h1></td>
             </tr>
         </table>
 
@@ -75,11 +75,18 @@
 
     </div>
     <div class="jagged-paper"></div>
+
+        <!-- For browser or OS saved payments -->
+    <div id="payment-request-button">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+    <div id="paypal-button-container"></div>
+
      <!-- For card payments -->
-    <form action="/charge" method="post" id="payment-form">
+    <form action="/stripe/charge" method="post" id="stripe-payment-form">
       <div class="form-row">
         <label for="card-element">
-          Credit or debit card
+          Credit or debit cards
         </label>
         <div id="card-element">
           <!-- A Stripe Element will be inserted here. -->
@@ -91,11 +98,9 @@
 
       <button id="stripe-submit">Pay with Card</button>
     </form>
-    <!-- For browser or OS saved payments -->
-    <div id="payment-request-button">
-      <!-- A Stripe Element will be inserted here. -->
-    </div>
-    <div id="paypal-button-container"></div>
+
+
+    <form action="/paypal/charge" method="post" id="paypal-payment-form"></form>
 
     <footer id="paid-footer" class="success">
 
@@ -117,11 +122,13 @@
 </body>
 <script>
     var stripe = Stripe('pk_test_M8Qj7M8ImoYAvYa8tJOYJmCT');
+    var qrOrderId = {{ fields.order_id }}
     var paid = "{{ fields.paid }}" == "True";
     var grandTotal = {{ fields.subtotal }};
+    var tip = {{ fields.tip }};
     var percentTip = function(percent){
             var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
-            var tip = (subtotal*percent).toFixed(2);
+            tip = (subtotal*percent).toFixed(2);
             var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
             document.getElementById('tip-amount').textContent = tip;
             document.getElementById('total').textContent = total;
@@ -132,7 +139,7 @@
         // Hide unpaid
         document.getElementById("tip").style.display = 'none';
         document.getElementById("paypal-button-container").style.display = 'none';
-        document.getElementById("payment-form").style.display = 'none';
+        document.getElementById("stripe-payment-form").style.display = 'none';
         // Show paid
         document.getElementById("paid").style.display = 'block';
         document.getElementById("paid-footer").style.display = 'block';
@@ -175,7 +182,7 @@
         // Add an instance of the card Element into the `card-element` <div>.
         card.mount('#card-element');
         // Create a token or display an error when the form is submitted.
-        var form = document.getElementById('payment-form');
+        var form = document.getElementById('stripe-payment-form');
         form.addEventListener('submit', function(event) {
           event.preventDefault();
           stripe.createToken(card).then(function(result) {
@@ -192,22 +199,22 @@
 
         function stripeTokenHandler(token) {
           // Insert the token ID into the form so it gets submitted to the server
-          var form = document.getElementById('payment-form');
+          var form = document.getElementById('stripe-payment-form');
           var stripeToken = document.createElement('input');
           var orderId =  document.createElement('input');
-          var amount = document.createElement('input');
+          var tipInput = document.createElement('input');
           stripeToken.setAttribute('type', 'hidden');
           orderId.setAttribute('type', 'hidden');
-          amount.setAttribute('type', 'hidden');
+          tipInput.setAttribute('type', 'hidden');
           stripeToken.setAttribute('name', 'stripeToken');
           orderId.setAttribute('name', 'orderId');
-          amount.setAttribute('name', 'amount');
+          tipInput.setAttribute('name', 'tip');
           stripeToken.setAttribute('value', token.id);
           orderId.setAttribute('value', {{ fields.order_id }});
-          amount.setAttribute('value', grandTotal);
+          tipInput.setAttribute('value', tip);
           form.appendChild(stripeToken);
           form.appendChild(orderId);
-          form.appendChild(amount);
+          form.appendChild(tipInput);
           showLoader();
           // Submit the form
           form.submit();
@@ -237,7 +244,7 @@
         });
         paymentRequest.on('token', function(ev) {
           // Send the token to your server to charge it!
-          fetch('/charges', {
+          fetch('/stripe/charge', {
             method: 'POST',
             body: JSON.stringify({token: ev.token.id}),
             headers: {'content-type': 'application/json'},
@@ -271,23 +278,43 @@
             //TODO: Do this server side https://developer.paypal.com/docs/checkout/integrate/#6-verify-the-transaction
                 // Capture the funds from the transaction
                 return actions.order.capture().then(function(details) {
-                    showPaid();
-                    hideLoader();
-                    // Call your server to save the transaction
-                    /*return fetch('/paypal-transaction-complete', {
-                        method: 'post',
-                        headers: {
-                            'content-type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            orderID: data.orderID
-                        })
-                    });*/
+                    var form = document.getElementById('paypal-payment-form');
+                    var paypalOrderId = document.createElement('input');
+                    var qrOrderIdInput =  document.createElement('input');
+                    var tipInput = document.createElement('input');
+                    paypalOrderId.setAttribute('type', 'hidden');
+                    qrOrderIdInput.setAttribute('type', 'hidden');
+                    tipInput.setAttribute('type', 'hidden');
+                    paypalOrderId.setAttribute('name', 'paypalOrderId');
+                    qrOrderIdInput.setAttribute('name', 'qrOrderId');
+                    tipInput.setAttribute('name', 'tip');
+                    paypalOrderId.setAttribute('value', data.orderID);
+                    qrOrderIdInput.setAttribute('value', qrOrderId);
+                    tipInput.setAttribute('value', tip);
+                    form.appendChild(paypalOrderId);
+                    form.appendChild(qrOrderIdInput);
+                    form.appendChild(tipInput);
+                    // Submit the form
+                    form.submit();
                 });
             }
         }).render('#paypal-button-container');
     }
-</script>
+
+     /*   //showPaid();
+        //hideLoader();
+        // Call your server to save the transaction
+        return fetch('/paypal/charge', {
+            method: 'post',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                qr_order_id : qrOrderId,
+                tip: tip,
+                paypal_order_id: data.orderID
+            })
+        });*/
 
 </script>
 </html>

@@ -4,7 +4,6 @@
         padding:25px !important;
         background: #D8E5EC;
         font-family:Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;
-
     }
 
 
@@ -38,7 +37,7 @@
 
     .less{
         padding: 0px 0px;
-     margin:0;
+        margin:0;
     }
 
     .less h1{
@@ -128,10 +127,16 @@
     }
 
     #payment-request-button.StripeElement,
-    #payment-form,
-    #paypal-button-container{
+    #stripe-payment-form,
+    #paypal-button-container,
+    .payment-buttons-container{
         max-width: 350px;
         margin: 0 auto;
+        border:1px solid red;
+    }
+
+    #paypal-payment-form {
+        display: none;
     }
 
 
@@ -229,7 +234,7 @@
         text-decoration: underline overline;
     }
 
-/* On screens that are 400px or less, set the background color to blue */
+
 @media screen and (min-width: 400px) {
   #stamp{
     margin: 0 110px;
@@ -266,7 +271,8 @@
 
     .paid .tip,
     .paid #paypal-button-container,
-    .paid #apply-pay-button{display:none;}
+    .paid #apply-pay-button,
+    .paid .payment-buttons-container{display:none;}
 
     .confirmation{
         text-align:center;
@@ -285,7 +291,7 @@
     .unpaid, .success,
     .unpaid footer {
         display:none;
-        }
+    }
 
 /**
  * Stripe

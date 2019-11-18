@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142501568-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-142501568-2');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Crushed PB - Order {{ fields.order_id }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/assets-receipt/style.css">
+</head>
+<body>
+    <div class="order">
+        <div class="logo"/></div>
+
+        <table id="unpaid">
+            <tr>
+                <td class="left-align">Check # {{ fields.order_id }}</td>
+                <td class="right-align">10/31/19</td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="dotted-light" /></td>
+            </tr>
+            <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
+            </tr>
+
+
+            <tr>
+                <td class="left-align"><strong>Tip:</strong></td>
+                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>
+            </tr>
+
+            <tr>
+                <td class="less" colspan="2"><hr class="dotted-heavy" /></td>
+            </tr>
+        <tr class="less">
+            <td class="left-align less"><h1>Total:</h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.total }}</span></h1></td>
+            </tr>
+        </table>
+
+        <div id="paid">
+            <div id="stamp">Paid</div>
+            <h2>Thank you for eating at Crushed!</h2>
+        </div>
+
+
+    </div>
+    <div class="jagged-paper"></div>
+    <footer id="paid-footer" class="success">
+
+        <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/"> QR-Code.io</a></p>
+    </footer>
+
+</body>
+</html>
