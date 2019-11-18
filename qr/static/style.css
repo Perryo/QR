@@ -128,10 +128,14 @@
     }
 
     #payment-request-button.StripeElement,
-    #payment-form,
+    #stripe-payment-form,
     #paypal-button-container{
         max-width: 350px;
         margin: 0 auto;
+    }
+
+    #paypal-payment-form {
+        display: none;
     }
 
 
@@ -285,7 +289,7 @@
     .unpaid, .success,
     .unpaid footer {
         display:none;
-        }
+    }
 
 /**
  * Stripe
