@@ -17,6 +17,6 @@ venv/bin/sqlformat
 venv/pyvenv.cfg
 .DS_Store
 qr/.DS_Store
-.gitsecret/keys/random_seed
 !*.secret
+.gitsecret/keys/random_seed
 qr/resources/credentials.json
