@@ -246,7 +246,7 @@
           // Send the token to your server to charge it!
           fetch('/stripe/charge', {
             method: 'POST',
-            body: JSON.stringify({token: ev.token.id}),
+            body: JSON.stringify({stripeToken: ev.token.id}),
             headers: {'content-type': 'application/json'},
           })
           .then(function(response) {
