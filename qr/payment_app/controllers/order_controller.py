@@ -1,5 +1,5 @@
 import stripe
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
 from django.core import serializers
@@ -11,22 +11,40 @@ from payment_app.models import Order
 from decimal import Decimal
 
 
+def handle_apply_pay_charge(request):
+    body = json.loads(request.body)
+    token = body.get('stripeToken')
+    order_id = body.get('orderId')
+    tip = body.get('tip')
+    order = Order.objects.get(order_id=order_id)
+    if do_stripe_charge(token, order, tip):
+        return JsonResponse({'success': 'true'})
+
+
 def handle_stripe_charge(request):
-    if not stripe.api_key:
-        stripe.api_key = apps.STRIPE_API_KEY
     # Token is created using Checkout or Elements!
     # Get the payment token ID submitted by the form:
     # TODO: Catch stripe.error.InvalidRequestError and reload page with same order info
     token = request.POST.get('stripeToken')
     order_id = request.POST.get('orderId')
     tip = request.POST.get('tip')
+    order = Order.objects.get(order_id=order_id)
+    if do_stripe_charge(token, order, tip):
+        return build_order_template(order, 'paid.html')
+    else:
+        return HttpResponseBadRequest()
+
+
+def do_stripe_charge(token, order, tip):
+    if not stripe.api_key:
+        stripe.api_key = apps.STRIPE_API_KEY
     try:
         tip = Decimal(tip)
     except TypeError:
         tip = Decimal(0)
 
+    # TODO: Raise exceptions
     if token:
-        order = Order.objects.get(order_id=order_id)
         stripe_total = str(order.subtotal + tip).replace('.', '')
         charge = stripe.Charge.create(
             amount=stripe_total,
@@ -40,16 +58,12 @@ def handle_stripe_charge(request):
             order.total = order.subtotal + tip
             order.paid = True
             order.save()
-            return build_order_template(order, 'paid.html')
-
+            return True
     else:
-        return HttpResponseBadRequest()
+        return False
 
 
 def handle_paypal_charge(request):
-    # TODO: What is this? Docs recommend it
-    # request = OrdersCreateRequest()
-    # request.headers['PayPal-Partner-Attribution-Id'] = 'PARTNER_ID_ASSIGNED_BY_YOUR_PARTNER_MANAGER'
     qr_order_id = request.POST.get('qrOrderId')
     tip = request.POST.get('tip')
     paypal_order_id = request.POST.get('paypalOrderId')
