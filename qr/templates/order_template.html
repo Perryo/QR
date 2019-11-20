@@ -124,12 +124,22 @@
     var subtotal = {{ fields.subtotal }};
     var grandTotal = {{ fields.subtotal }};
     var tip = {{ fields.tip }};
+
+    var getStripeTotal = function(total){
+     stringTotal = grandTotal.toString().replace('.','')
+     if(stringTotal.charAt(0) == "0" && stringTotal.length == 2){
+        stringTotal = stringTotal.split("").reverse().join("");
+     }
+     return parseInt(stringTotal);
+
+    }
+
     var paymentRequest = stripe.paymentRequest({
           country: 'US',
           currency: 'usd',
           total: {
             label: 'Crushed PB',
-            amount: parseInt(grandTotal.toString().replace('.','')),
+            amount: getStripeTotal(grandTotal),
           }
         });
 
@@ -143,7 +153,7 @@
             paymentRequest.update({
                 total: {
                     label: 'Crushed PB',
-                    amount: parseInt(grandTotal.toString().replace('.',''))
+                    amount: getStripeTotal(grandTotal),
                 }
             });
     }
