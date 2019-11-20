@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_GET
 from payment_app.controllers import order_controller
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
 
 
 @require_GET
@@ -10,8 +11,9 @@ def index(request):
     return HttpResponse(template.render())
 
 
+@csrf_exempt
 def applepay_charge(request):
-    return order_controller.handle_apply_pay_charge(request)
+    return order_controller.handle_stripe_charge(request)
 
 
 def stripe_charge(request):
