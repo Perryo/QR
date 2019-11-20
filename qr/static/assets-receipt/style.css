@@ -12,7 +12,7 @@
         max-width: 350px;
         min-height:353px;
         margin: auto;
-        padding:30px 0;
+        padding:15px 0;
         color: #3f3f3f;
         background:white;
         position: relative;
@@ -24,7 +24,7 @@
 
     table{
         border: 0px;
-        margin: 10px auto 0 auto;
+        margin: 0px auto 0 auto;
         width: 250px;
         font-weight:400;
         color:#666;
@@ -131,7 +131,22 @@
     #paypal-button-container,
     .payment-buttons-container{
         max-width: 350px;
-        margin: 0 auto;
+        margin: 20px auto;
+        box-shadow: 0 0 20px rgba(0,0,0,.3);
+        border:0px solid rgba(255,255,255,.2);
+        border-radius:4px;
+    }
+    #paypal-button-container{
+        height:45px;
+        box-shadow: 0 0 20px rgba(0,0,0,.2);
+        border:1px solid #e6a300;
+     }
+
+    #stripe-payment-form{
+        box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+
+    #applepay-payment-form input{
         border:1px solid red;
     }
 
@@ -229,7 +244,7 @@
         border-radius: 900px;
         transform: rotate(330deg);
         text-transform: uppercase;
-        margin: 12px 96px;
+        margin: -15px 96px;
         padding: 30px 0;
         text-decoration: underline overline;
     }
@@ -241,10 +256,32 @@
   }
 }
 
+#survey{
+    display:block;
+    max-width: 350px;
+    margin:0 auto;
+    text-align:center;
+    font-weight:400;
+    font-size:22px;
+    background-color: #565656;
+    color: transparent;
+    text-shadow: 2px 2px 3px rgba(255,255,255,0.5);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+}
+
+form#survey-form input[type=button]{
+    font-size:22px;
+    -webkit-border-radius:4px;
+    -webkit-appearance: none;
+    padding:10px 20px;
+
+}
 
     p.powered-by-qrcodeio{
         max-width: 320px;
-        margin: 60px auto 0;
+        margin: 30px auto 0;
         color: #999;
         text-align:center;
         font-size:.9rem;
@@ -273,6 +310,12 @@
     .paid #paypal-button-container,
     .paid #apply-pay-button,
     .paid .payment-buttons-container{display:none;}
+
+    #paid h2{
+        padding:0;
+        margin:0;
+    }
+
 
     .confirmation{
         text-align:center;
@@ -308,7 +351,6 @@
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: white;
-
   box-shadow: 0 1px 3px 0 #e6ebf1;
   -webkit-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
@@ -336,8 +378,8 @@
     background: #32325d;
     white-space: nowrap;
     display: inline-block;
-    height: 40px;
-    line-height: 40px;
+    height: 44px;
+    line-height: 44px;
     padding: 0 14px;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
     border-radius: 4px;
@@ -345,7 +387,8 @@
     font-weight: 600;
     letter-spacing: 0.025em;
     text-decoration: none;
+    font-weight:300;
     -webkit-transition: all 150ms ease;
     transition: all 150ms ease;
-    margin: 15px auto 0 auto;
+    margin: 0 auto;
 }

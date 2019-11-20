@@ -86,9 +86,11 @@
     <form action="/stripe/charge" method="post" id="stripe-payment-form">
         {% csrf_token %}
       <div class="form-row">
+          <!--
         <label for="card-element">
-          Credit or debit cards
+          Pay with credit/debit
         </label>
+        -->
         <div id="card-element">
           <!-- A Stripe Element will be inserted here. -->
         </div>
@@ -97,7 +99,7 @@
         <div id="card-errors" role="alert"></div>
       </div>
 
-      <button id="stripe-submit">Pay with Card</button>
+      <button id="stripe-submit">Pay with Credit/Debit</button>
     </form>
 
 
