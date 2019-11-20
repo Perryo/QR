@@ -240,7 +240,7 @@
         headers: {'content-type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
       })
       .then(function(response) {
-        if (response.success == 'true') {
+        if (response.ok) {
           // Report to the browser that the payment was successful, prompting
           // it to close the browser payment interface.
           ev.complete('success');
