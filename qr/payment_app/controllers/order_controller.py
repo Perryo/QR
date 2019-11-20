@@ -30,7 +30,7 @@ def handle_stripe_charge(request):
     tip = request.POST.get('tip')
     order = Order.objects.get(order_id=order_id)
     if do_stripe_charge(token, order, tip):
-        return build_order_template(order, 'paid.html')
+        return build_order_template(order, 'paid.html', request)
     else:
         return HttpResponseBadRequest()
 
@@ -75,13 +75,13 @@ def handle_paypal_charge(request):
             order.tip = Decimal(tip)
             order.total = Decimal(response.result.purchase_units[0].amount.value)
             order.save()
-            return build_order_template(order, 'paid.html')
+            return build_order_template(order, 'paid.html', request)
 
 
 def handle_order(request, order_id):
     order = Order.objects.get(order_id=order_id)
     # If order is already paid view will handle it
-    return build_order_template(order, 'order_template.html')
+    return build_order_template(order, 'order_template.html', request)
 
 
 def dashboard(request):
@@ -91,7 +91,7 @@ def dashboard(request):
     return render_to_response('dashboard.html', data, context)
 
 
-def build_order_template(order, page):
+def build_order_template(order, page, request):
     data = json.loads(serializers.serialize("json", [order]))[0]
     template = loader.get_template(page)
-    return HttpResponse(template.render(data))
+    return HttpResponse(template.render(data, request))

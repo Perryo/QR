@@ -84,6 +84,7 @@
 
      <!-- For card payments -->
     <form action="/stripe/charge" method="post" id="stripe-payment-form">
+        {% csrf_token %}
       <div class="form-row">
         <label for="card-element">
           Credit or debit cards
@@ -100,7 +101,12 @@
     </form>
 
 
-    <form action="/paypal/charge" method="post" id="paypal-payment-form"></form>
+    <form action="/paypal/charge" method="post" id="paypal-payment-form">
+        {% csrf_token %}
+    </form>
+    <form action="/applepay/charge" method="post" id="applepay-payment-form">
+        {% csrf_token %}
+    </form>
 
     <footer id="paid-footer" class="success">
 
@@ -118,10 +124,9 @@
 </span>
 
 <!-- modal and loader - END -->
-
 </body>
 <script>
-    var stripe = Stripe('pk_live_T1qBqXuT6ZxX93Zr8GJCkChe');
+    var stripe = Stripe('pk_test_M8Qj7M8ImoYAvYa8tJOYJmCT');
     var qrOrderId = {{ fields.order_id }}
     var paid = "{{ fields.paid }}" == "True";
     var subtotal = {{ fields.subtotal }};
@@ -256,10 +261,10 @@
         });
         paymentRequest.on('token', function(ev) {
           // Send the token to your server to charge it!
-          fetch('/applepay/charge', {
+        fetch('/applepay/charge', {
             method: 'POST',
             body: JSON.stringify({stripeToken: ev.token.id, orderId: qrOrderId, tip: tip }),
-            headers: {'content-type': 'application/json'},
+            headers: {'content-type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
           })
           .then(function(response) {
             if (response.success == 'true') {
