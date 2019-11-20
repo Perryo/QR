@@ -13,7 +13,7 @@ def index(request):
 
 @csrf_exempt
 def applepay_charge(request):
-    return order_controller.handle_stripe_charge(request)
+    return order_controller.handle_apply_pay_charge(request)
 
 
 def stripe_charge(request):
