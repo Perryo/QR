@@ -81,7 +81,10 @@ def handle_paypal_charge(request):
 def handle_order(request, order_id):
     order = Order.objects.get(order_id=order_id)
     # If order is already paid view will handle it
-    return build_order_template(order, 'order_template.html', request)
+    if order.paid:
+        return build_order_template(order, 'paid.html', request)
+    else:
+        return build_order_template(order, 'order_template.html', request)
 
 
 def dashboard(request):
