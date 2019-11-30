@@ -9,6 +9,14 @@ class Customer(models.Model):
     email_address = models.CharField(unique=True, max_length=50, null=True)
     would_use_qr = models.BooleanField(null=True)
 
+    def __str__(self):
+        if self.email_address:
+            return self.email_address
+        elif self.phone_number:
+            return self.phone_number
+        else:
+            return '{}'.format(self.pk)
+
 
 class Order(models.Model):
     # TODO: Add stripe and paypal order ids

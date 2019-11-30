@@ -1,6 +1,7 @@
 import datetime
 
 import stripe
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
@@ -41,34 +42,35 @@ def handle_stripe_charge(request):
         return build_order_template(order, 'order_template.html', request)
 
 
-def save_customer_info(order, charge):
+def save_customer_info(order, email, phone, name):
     customer = None
-    if charge.billing_details:
-        email = charge.billing_details.email
-        phone = charge.billing_details.phone
-        first_name = None
-        last_name = None
-        if charge.billing_details.name:
-            name = charge.billing_details.name.split(' ', 1)
-            first_name = name[0]
-            if len(name) > 1:
-                last_name = name[1]
-        # Look up by email
-        if email:
-            customer = Customer.objects.get(email_address=email)
-        # If not found lookup by phone number
-        if phone and not customer:
-            customer = Customer.objects.get(phone=phone)
-        # If this customer still hasnt been found create one
-        if not customer:
-            customer = Customer()
-        # Set info that is missing
-        customer.email_address = customer.email_address or email
-        customer.phone_number = customer.phone_number or phone
-        customer.first_name = customer.first_name or first_name
-        customer.last_name = customer.last_name or last_name
-        customer.save()
-        order.customer = customer
+    first_name = None
+    last_name = None
+    if name:
+        name = name.split(' ', 1)
+        first_name = name[0]
+        if len(name) > 1:
+            last_name = name[1]
+    # Look up by email
+    try:
+        customer = Customer.objects.get(email_address=email)
+    except ObjectDoesNotExist:
+        try:
+            # If not found lookup by phone number
+            if phone and not customer:
+                customer = Customer.objects.get(phone=phone)
+        except ObjectDoesNotExist:
+            pass
+    # If this customer still hasnt been found create one
+    if not customer:
+        customer = Customer()
+    # Set info that is missing
+    customer.email_address = customer.email_address or email
+    customer.phone_number = customer.phone_number or phone
+    customer.first_name = customer.first_name or first_name
+    customer.last_name = customer.last_name or last_name
+    customer.save()
+    order.customer = customer
 
 
 # TODO: This should raise exceptions
@@ -95,7 +97,9 @@ def do_stripe_charge(token, order, tip):
                 order.tip = tip
                 order.total = order.subtotal + tip
                 order.paid = True
-                save_customer_info(order, charge)
+                if charge.billing_details:
+                    customer = charge.billing_details
+                    save_customer_info(order, customer.email, customer.phone, customer.name)
                 order.save()
                 return True
         except InvalidRequestError:
@@ -115,6 +119,12 @@ def handle_paypal_charge(request):
             order.paid = True
             order.tip = Decimal(tip)
             order.total = Decimal(response.result.purchase_units[0].amount.value)
+            try:
+                customer = response.result.payer
+                name = '{} {}'.format(customer.name.given_name, customer.name.surname)
+                save_customer_info(order, customer.email_address, None, name)
+            except Exception:
+                pass
             order.save()
             return build_order_template(order, 'paid.html', request)
 
