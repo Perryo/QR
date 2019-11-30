@@ -26,7 +26,7 @@
         <table id="unpaid">
             <tr>
                 <td class="left-align">Check # {{ fields.order_id }}</td>
-                <td class="right-align">11/21/19</td>
+                <td class="right-align">{{ fields.date }}</td>
             </tr>
             <tr>
                 <td colspan="2"><hr class="dotted-light" /></td>
@@ -63,16 +63,9 @@
             </tr>
         <tr class="less">
             <td class="left-align less"><h1>Total:</h1></td>
-            <td class="right-align"><h1>$<span id="total">{{ fields.total }}</span></h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
             </tr>
         </table>
-
-        <div id="paid" class="success">
-            <div id="stamp">Paid</div>
-            <h2>Thank you for eating at Crushed!</h2>
-        </div>
-
-
     </div>
     <div class="jagged-paper"></div>
 
@@ -111,7 +104,6 @@
     </form>
 
     <footer id="paid-footer" class="success">
-
         <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/"> QR-Code.io</a></p>
     </footer>
 
@@ -128,12 +120,31 @@
 <!-- modal and loader - END -->
 </body>
 <script>
-    var stripe = Stripe('pk_test_M8Qj7M8ImoYAvYa8tJOYJmCT');
+    var stripe = Stripe('pk_live_T1qBqXuT6ZxX93Zr8GJCkChe');
     var qrOrderId = {{ fields.order_id }}
     var paid = "{{ fields.paid }}" == "True";
     var subtotal = {{ fields.subtotal }};
     var grandTotal = {{ fields.subtotal }};
     var tip = {{ fields.tip }};
+
+    var getStripeTotal = function(total){
+     stringTotal = grandTotal.toString().replace('.','')
+     if(stringTotal.charAt(0) == "0" && stringTotal.length == 2){
+        stringTotal = stringTotal.split("").reverse().join("");
+     }
+     return parseInt(stringTotal);
+
+    }
+
+    var paymentRequest = stripe.paymentRequest({
+          country: 'US',
+          currency: 'usd',
+          total: {
+            label: 'Crushed PB',
+            amount: getStripeTotal(grandTotal),
+          }
+        });
+
     var percentTip = function(percent){
             var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
             tip = (subtotal*percent).toFixed(2);
@@ -141,17 +152,12 @@
             document.getElementById('tip-amount').textContent = tip;
             document.getElementById('total').textContent = total;
             grandTotal = total;
-    }
-
-    var showPaid = function(){
-        // Hide unpaid
-        document.getElementById("tip").style.display = 'none';
-        document.getElementById("paypal-button-container").style.display = 'none';
-        document.getElementById("stripe-payment-form").style.display = 'none';
-        // Show paid
-        document.getElementById("paid").style.display = 'block';
-        document.getElementById("paid-footer").style.display = 'block';
-        document.getElementById("protip").style.display = 'block';
+            paymentRequest.update({
+                total: {
+                    label: 'Crushed PB',
+                    amount: getStripeTotal(grandTotal),
+                }
+            });
     }
 
     function submitForm(formId, values) {
@@ -179,135 +185,112 @@
         document.getElementById("loader").style.display = 'none';
     }
     
-    if(paid){
-       showPaid();
-    }
-    else {
-        /* STRIPE CARD */
-        var style = {
-          base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSmoothing: 'antialiased',
-            fontSize: '16px',
-            '::placeholder': {
-              color: '#aab7c4'
-            }
-          },
-          invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
-          }
-        };
-        // Create an instance of the card Element.
-        var elements = stripe.elements();
-        var card = elements.create('card', {style: style});
-        // Add an instance of the card Element into the `card-element` <div>.
-        card.mount('#card-element');
-        // Create a token or display an error when the form is submitted.
-        var form = document.getElementById('stripe-payment-form');
-        form.addEventListener('submit', function(event) {
-          event.preventDefault();
-          stripe.createToken(card).then(function(result) {
-            if (result.error) {
-              // Inform the customer that there was an error.
-              var errorElement = document.getElementById('card-errors');
-              errorElement.textContent = result.error.message;
-            } else {
-              // Send the token to your server.
-              stripeTokenHandler(result.token);
-            }
-          });
-        });
 
-        function stripeTokenHandler(token) {
-            values = {
-                'stripeToken': token.id,
-                'orderId': qrOrderId,
-                'tip': tip
-            }
-            submitForm('stripe-payment-form', values);
+    /* STRIPE CARD */
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
         }
-       /* STRIPE APPLE PAY */
-       var paymentRequest = stripe.paymentRequest({
-          country: 'US',
-          currency: 'usd',
-          lineItems: [
-              {
-                type: 'final',
-                label: 'Subtotal',
-                amount: subtotal
-              },
-              {
-                type: 'final',
-                label: 'Tip',
-                amount: tip
-              }
-            ],
-          total: {
-            label: 'Crushed PB',
-            amount: parseInt(grandTotal.toString().replace('.','')),
-          }
-        });
-        var elements = stripe.elements();
-        var prButton = elements.create('paymentRequestButton', {
-          paymentRequest: paymentRequest,
-        });
-        // Check the availability of the Payment Request API first.
-        paymentRequest.canMakePayment().then(function(result) {
-          if (result) {
-            prButton.mount('#payment-request-button');
-          } else {
-            document.getElementById('payment-request-button').style.display = 'none';
-          }
-        });
-        paymentRequest.on('token', function(ev) {
-          // Send the token to your server to charge it!
-        fetch('/applepay/charge', {
-            method: 'POST',
-            body: JSON.stringify({stripeToken: ev.token.id, orderId: qrOrderId, tip: tip }),
-            headers: {'content-type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
-          })
-          .then(function(response) {
-            if (response.success == 'true') {
-              // Report to the browser that the payment was successful, prompting
-              // it to close the browser payment interface.
-              ev.complete('success');
-              window.location.reload();
-            } else {
-              // Report to the browser that the payment failed, prompting it to
-              // re-show the payment interface, or show an error message and close
-              // the payment interface.
-              ev.complete('fail');
-            }
-          });
-        });
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+    // Create an instance of the card Element.
+    var elements = stripe.elements();
+    var card = elements.create('card', {style: style});
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+    // Create a token or display an error when the form is submitted.
+    var form = document.getElementById('stripe-payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the customer that there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
 
-        /* Paypal */
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                // Set up the transaction
-                showLoader();
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: grandTotal
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                // Capture the funds from the transaction
-                return actions.order.capture().then(function(details) {
-                    values = {
-                        'paypalOrderId': data.orderID,
-                        'qrOrderId': qrOrderId,
-                        'tip': tip
-                    }
-                    submitForm('paypal-payment-form', values);
-                });
-            }
-        }).render('#paypal-button-container');
+    function stripeTokenHandler(token) {
+        values = {
+            'stripeToken': token.id,
+            'orderId': qrOrderId,
+            'tip': tip
+        }
+        submitForm('stripe-payment-form', values);
     }
+   /* STRIPE APPLE PAY */
+    var elements = stripe.elements();
+    var prButton = elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+    });
+    // Check the availability of the Payment Request API first.
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        prButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+    paymentRequest.on('token', function(ev) {
+      // Send the token to your server to charge it!
+    fetch('/applepay/charge', {
+        method: 'POST',
+        body: JSON.stringify({stripeToken: ev.token.id, orderId: qrOrderId, tip: tip }),
+        headers: {'content-type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+      })
+      .then(function(response) {
+        if (response.ok) {
+          // Report to the browser that the payment was successful, prompting
+          // it to close the browser payment interface.
+          ev.complete('success');
+          window.location.reload();
+        } else {
+          // Report to the browser that the payment failed, prompting it to
+          // re-show the payment interface, or show an error message and close
+          // the payment interface.
+          ev.complete('fail');
+        }
+      });
+    });
+
+    /* Paypal */
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // Set up the transaction
+            showLoader();
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: grandTotal
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // Capture the funds from the transaction
+            return actions.order.capture().then(function(details) {
+                values = {
+                    'paypalOrderId': data.orderID,
+                    'qrOrderId': qrOrderId,
+                    'tip': tip
+                }
+                submitForm('paypal-payment-form', values);
+            });
+        }
+    }).render('#paypal-button-container');
+
 </script>
 </html>
