@@ -256,7 +256,8 @@
   }
 }
 
-#survey{
+#survey, #survey-thanks{
+    opacity: 1
     display:block;
     max-width: 350px;
     margin:0 auto;
@@ -391,4 +392,15 @@ form#survey-form input[type=button]{
     -webkit-transition: all 150ms ease;
     transition: all 150ms ease;
     margin: 0 auto;
+}
+
+.transition.out{
+    opacity: 0;
+}
+
+.transition {
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -ms-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
 }

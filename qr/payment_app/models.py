@@ -7,6 +7,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=120, null=True)
     phone_number = models.CharField(unique=True, max_length=15, null=True)
     email_address = models.CharField(unique=True, max_length=50, null=True)
+    would_use_qr = models.BooleanField(null=True)
 
 
 class Order(models.Model):

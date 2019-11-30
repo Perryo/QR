@@ -29,6 +29,11 @@ def order(request, order_id):
     return order_controller.handle_order(request, order_id)
 
 
+@csrf_exempt
+def survey(request):
+    return order_controller.handle_survey(request)
+
+
 @require_GET
 def dashboard(request):
     return order_controller.dashboard(request)

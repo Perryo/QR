@@ -143,3 +143,14 @@ def build_order_template(order, page, request):
         data['fields']['date'] = formatted_date
     template = loader.get_template(page)
     return HttpResponse(template.render(data, request))
+
+
+def handle_survey(request):
+    body = json.loads(request.body)
+    order_id = body.get('orderId')
+    would_use = body.get('wouldUse')
+    order = Order.objects.get(order_id=order_id)
+    customer = order.customer
+    customer.would_use_qr = would_use == 'true'
+    customer.save()
+    return HttpResponse(200)
