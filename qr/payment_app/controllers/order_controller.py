@@ -1,3 +1,5 @@
+import datetime
+
 import stripe
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render_to_response
@@ -5,11 +7,16 @@ from django.template import loader, RequestContext
 from django.core import serializers
 import json
 
+from stripe.error import InvalidRequestError
+
 from payment_app import apps
 from payment_app.controllers.paypal_client import GetOrder
-from payment_app.models import Order
+from payment_app.models import Order, Customer
 from decimal import Decimal
 
+
+# TODO: Gather email and for sending receipt?
+# https://stripe.com/docs/receipts
 
 def handle_apply_pay_charge(request):
     body = json.loads(request.body)
@@ -24,7 +31,6 @@ def handle_apply_pay_charge(request):
 def handle_stripe_charge(request):
     # Token is created using Checkout or Elements!
     # Get the payment token ID submitted by the form:
-    # TODO: Catch stripe.error.InvalidRequestError and reload page with same order info
     token = request.POST.get('stripeToken')
     order_id = request.POST.get('orderId')
     tip = request.POST.get('tip')
@@ -32,33 +38,68 @@ def handle_stripe_charge(request):
     if do_stripe_charge(token, order, tip):
         return build_order_template(order, 'paid.html', request)
     else:
-        return HttpResponseBadRequest()
+        return build_order_template(order, 'order_template.html', request)
 
 
+def save_customer_info(order, charge):
+    customer = None
+    if charge.billing_details:
+        email = charge.billing_details.email
+        phone = charge.billing_details.phone
+        first_name = None
+        last_name = None
+        if charge.billing_details.name:
+            name = charge.billing_details.name.split(' ', 1)
+            first_name = name[0]
+            if len(name) > 1:
+                last_name = name[1]
+        # Look up by email
+        if email:
+            customer = Customer.objects.get(email_address=email)
+        # If not found lookup by phone number
+        if phone and not customer:
+            customer = Customer.objects.get(phone=phone)
+        # If this customer still hasnt been found create one
+        if not customer:
+            customer = Customer()
+        # Set info that is missing
+        customer.email_address = customer.email_address or email
+        customer.phone_number = customer.phone_number or phone
+        customer.first_name = customer.first_name or first_name
+        customer.last_name = customer.last_name or last_name
+        customer.save()
+        order.customer = customer
+
+
+# TODO: This should raise exceptions
 def do_stripe_charge(token, order, tip):
+    if order.paid:
+        return True
     if not stripe.api_key:
         stripe.api_key = apps.STRIPE_API_KEY
     try:
         tip = Decimal(tip)
     except TypeError:
         tip = Decimal(0)
-
-    # TODO: Raise exceptions
     if token:
-        stripe_total = str(order.subtotal + tip).replace('.', '')
-        charge = stripe.Charge.create(
-            amount=stripe_total,
-            currency='usd',
-            description='QR charge',
-            source=token,
-        )
-        if not charge.failure_code:
-            # Set order paid
-            order.tip = tip
-            order.total = order.subtotal + tip
-            order.paid = True
-            order.save()
-            return True
+        try:
+            stripe_total = str(order.subtotal + tip).replace('.', '')
+            charge = stripe.Charge.create(
+                amount=stripe_total,
+                currency='usd',
+                description='QR charge',
+                source=token,
+            )
+            if not charge.failure_code:
+                # Set order paid
+                order.tip = tip
+                order.total = order.subtotal + tip
+                order.paid = True
+                save_customer_info(order, charge)
+                order.save()
+                return True
+        except InvalidRequestError:
+            return False
     else:
         return False
 
@@ -96,5 +137,9 @@ def dashboard(request):
 
 def build_order_template(order, page, request):
     data = json.loads(serializers.serialize("json", [order]))[0]
+    date = data['fields'].get('date')
+    if date:
+        formatted_date = datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%b %d %Y')
+        data['fields']['date'] = formatted_date
     template = loader.get_template(page)
     return HttpResponse(template.render(data, request))
