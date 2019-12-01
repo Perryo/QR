@@ -2,7 +2,7 @@ import datetime
 
 import stripe
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
 from django.core import serializers
@@ -130,7 +130,10 @@ def handle_paypal_charge(request):
 
 
 def handle_order(request, order_id):
-    order = Order.objects.get(order_id=order_id)
+    try:
+        order = Order.objects.get(order_id=order_id)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound()
     # If order is already paid view will handle it
     if order.paid:
         return build_order_template(order, 'paid.html', request)
