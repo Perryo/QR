@@ -404,3 +404,18 @@ form#survey-form input[type=button]{
     -ms-transition: opacity 1s ease-in-out;
     -o-transition: opacity 1s ease-in-out;
 }
+
+#custom-tip {
+    font-size: 16px;
+    width: 100%;
+    text-align: right;
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 12px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+}

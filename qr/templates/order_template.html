@@ -4,6 +4,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142501568-2"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+<script src="https://unpkg.com/autonumeric"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -35,28 +40,29 @@
                 <td class="left-align"><strong>Subtotal:</strong></td>
                 <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
             </tr>
-
-
-
+            <tr>
+                 <td colspan="2"><hr class="dotted-light"/></td>
+            </tr>
+            <tr>
+                <td class="left-align"><label for="custom-tip"><strong>Tip:</strong></label></td>
+                <td class="right-align"> <input id="custom-tip" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189" type="text" class="form-control" placeholder="$0.00"/></td>
+            </tr>
             <tr id="tip" class="tip">
                 <td colspan="2" >
                     <div class="button-group-tip">
-                        <div>Add tip</div>
                         <button onclick="percentTip(.15)">15%</button>
                         <button onclick="percentTip(.20)">20%</button>
                         <button onclick="percentTip(.25)">25%</button>
-                        <br />
-                        <button class="no-tip" onclick="percentTip(.00)">No tip</button>
+                        <br/>
                     </div>
-
                 </td>
             </tr>
 
 
-            <tr>
-                <td class="left-align"><strong>Tip:</strong></td>
-                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td class="left-align"><strong>Tip:</strong></td>-->
+<!--                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>-->
+<!--            </tr>-->
 
             <tr>
                 <td class="less" colspan="2"><hr class="dotted-heavy" /></td>
@@ -127,13 +133,14 @@
     var grandTotal = {{ fields.subtotal }};
     var tip = {{ fields.tip }};
 
+    var tipInput = new AutoNumeric(document.getElementById("custom-tip"));
+
     var getStripeTotal = function(total){
      stringTotal = grandTotal.toString().replace('.','')
      if(stringTotal.charAt(0) == "0" && stringTotal.length == 2){
         stringTotal = stringTotal.split("").reverse().join("");
      }
      return parseInt(stringTotal);
-
     }
 
     var paymentRequest = stripe.paymentRequest({
@@ -145,11 +152,8 @@
           }
         });
 
-    var percentTip = function(percent){
-            var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
-            tip = (subtotal*percent).toFixed(2);
+    var updateTip = function(){
             var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
-            document.getElementById('tip-amount').textContent = tip;
             document.getElementById('total').textContent = total;
             grandTotal = total;
             paymentRequest.update({
@@ -159,6 +163,26 @@
                 }
             });
     }
+
+    var percentTip = function(percent){
+        var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
+        tip = (subtotal*percent).toFixed(2);
+        $("#custom-tip").val(tip);
+        updateTip();
+    }
+
+
+    $("#custom-tip").bind("keyup input", function(event) {
+        var val = $(this).val();
+        if (val === undefined || val === ''){
+            val = 0;
+        }
+        while(val.indexOf(',') > -1){
+            val = val.replace(',','');
+        }
+        tip = val;
+        updateTip();
+    });
 
     function submitForm(formId, values) {
           // Insert the token ID into the form so it gets submitted to the server
