@@ -51,17 +51,21 @@
 
         <div id="paid">
             <div id="stamp">Paid</div>
-            <h2>Thank you for eating at Crushed!</h2>
+            <div class="confirmation-message">
+                <h3>Payment Successful</h3>
+                <p>You can leave whenever you're ready.</p>
+            </div>
         </div>
 
 
     </div>
     <div class="jagged-paper"></div>
         <div id="survey" class="transition">
+            <h2>Feedback...</h2>
             <p>Would you pay by QR again?</p>
             <form id="survey-form">
-                <input type="button" onclick="sendSurvey('false')" value="No">
                 <input type="button" onclick="sendSurvey('true')" value="Yes">
+                <input type="button" onclick="sendSurvey('false')" value="No">
             </form>
         </div>
         <div id="survey-thanks" class="transition out">

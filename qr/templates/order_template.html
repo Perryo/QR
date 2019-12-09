@@ -34,35 +34,30 @@
                 <td class="right-align">{{ fields.date }}</td>
             </tr>
             <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>${{ fields.subtotal }}</strong></td>
+            </tr>
+            <tr>
                 <td colspan="2"><hr class="dotted-light" /></td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Subtotal:</strong></td>
-                <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
-            </tr>
-            <tr>
-                 <td colspan="2"><hr class="dotted-light"/></td>
-            </tr>
-            <tr>
-                <td class="left-align"><label for="custom-tip"><strong>Tip:</strong></label></td>
-                <td class="right-align"> <input id="custom-tip" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189" type="text" class="form-control" placeholder="$0.00"/></td>
-            </tr>
+
             <tr id="tip" class="tip">
                 <td colspan="2" >
+                    <div class="tip-title">Add Tip</div>
                     <div class="button-group-tip">
                         <button onclick="percentTip(.15)">15%</button>
                         <button onclick="percentTip(.20)">20%</button>
                         <button onclick="percentTip(.25)">25%</button>
                         <br/>
+                        <div onclick="this.classList.toggle('custom-tip-open');" class="custom-tip-button">Enter Custom Amount</div>
+                        <div class="custom-tip-container">
+                           <input id="custom-tip" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189" type="text" class="form-control" placeholder="0.00"/>
+                        </div>
+
                     </div>
                 </td>
             </tr>
 
-
-<!--            <tr>-->
-<!--                <td class="left-align"><strong>Tip:</strong></td>-->
-<!--                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>-->
-<!--            </tr>-->
 
             <tr>
                 <td class="less" colspan="2"><hr class="dotted-heavy" /></td>

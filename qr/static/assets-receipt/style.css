@@ -80,10 +80,19 @@
         background-position: center;
     }
 
+    .tip-title{
+        margin: 10px 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        /* color: #fdb100; */
+    }
+
+
+
     .button-group-tip{
-        margin:5px 0 20px 0;
         padding:0;
         white-space:nowrap;
+        margin: 0 0 17px 0;
     }
 
     .button-group-tip div{
@@ -100,6 +109,63 @@
         letter-spacing: -1px;
 
     }
+
+
+
+
+/* start - custom tip area */
+
+.custom-tip-button{
+    margin: 15px 0 0 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 10px 0 !important;
+
+}
+
+.custom-tip-container{
+    margin:0;
+    padding:0 !important;
+    height:0;
+    overflow:hidden;
+    -webkit-transition: 200ms ease;
+    transition: 200ms ease;
+    line-height:0;
+    position:relative;
+}
+
+.custom-tip-container::before {
+    content: '$';
+    position: absolute;
+    top: 23px;
+    left: 20px;
+    z-index: 1;
+    font-weight: bold;
+    color: black;
+}
+
+.custom-tip-open + .custom-tip-container{
+    height:55px;
+}
+
+#custom-tip {
+    padding: 10px;
+    text-align:right;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: -1px;
+
+
+
+    color:black;
+}
+
+/* end - custom tip area */
+
+
 
     button.no-tip{
         border:0;
@@ -139,7 +205,7 @@
     #paypal-button-container{
         height:45px;
         box-shadow: 0 0 20px rgba(0,0,0,.2);
-        border:1px solid #e6a300;
+        border:0px solid #e6a300;
      }
 
     #stripe-payment-form{
@@ -244,9 +310,13 @@
         border-radius: 900px;
         transform: rotate(330deg);
         text-transform: uppercase;
-        margin: -15px 96px;
         padding: 30px 0;
         text-decoration: underline overline;
+        /*margin: -15px 96px; */
+        position: absolute;
+        top: 113px;
+        left:100px;
+        display:none;
     }
 
 
@@ -263,20 +333,26 @@
     margin:0 auto;
     text-align:center;
     font-weight:400;
-    font-size:22px;
-    background-color: #565656;
-    color: transparent;
-    text-shadow: 2px 2px 3px rgba(255,255,255,0.5);
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
+    font-size:20px;
+    color:#555;
 }
+
+#survey h2{
+    margin:0;
+}
+#survey p{
+    padding: 8px 0 23px 0;
+    margin:0;
+}
+
 
 form#survey-form input[type=button]{
     font-size:22px;
     -webkit-border-radius:4px;
     -webkit-appearance: none;
     padding:10px 20px;
+    color:white;
+    background-color:#009040;
 
 }
 
@@ -312,10 +388,25 @@ form#survey-form input[type=button]{
     .paid #apply-pay-button,
     .paid .payment-buttons-container{display:none;}
 
-    #paid h2{
+
+
+    .confirmation-message{
+        padding:20px 25px 10px 25px;
+        margin:20px;
+        font-size: 18px;
+        background-color:#009040;
+        color:white;
+        border-radius: 8px;
+
+    }
+
+    .confirmation-message h3{
+        text-transform:uppercase;
         padding:0;
         margin:0;
+        font-size:1.5em;
     }
+
 
 
     .confirmation{
@@ -405,17 +496,4 @@ form#survey-form input[type=button]{
     -o-transition: opacity 1s ease-in-out;
 }
 
-#custom-tip {
-    font-size: 16px;
-    width: 100%;
-    text-align: right;
-    box-sizing: border-box;
-    height: 40px;
-    padding: 10px 12px;
-    border: 1px solid #dedede;
-    border-radius: 4px;
-    background-color: white;
-    box-shadow: 0 1px 3px 0 #e6ebf1;
-    -webkit-transition: box-shadow 150ms ease;
-    transition: box-shadow 150ms ease;
-}
+
