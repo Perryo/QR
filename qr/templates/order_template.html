@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142501568-2"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+<script src="https://unpkg.com/autonumeric"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-142501568-2');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Crushed PB - Order {{ fields.order_id }}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AUrba_D_ZjQppeHmyIMG5ocxIf-HWV3KOjrUONZ-ALxaP2ZQ_46m5W1x6Fu1Tm9UaAXACBmifjrjY28V&disable-funding=credit,card"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/assets-receipt/style.css">
+</head>
+<body>
+    <div class="order">
+        <div class="logo"/></div>
+
+        <table id="unpaid">
+            <tr>
+                <td class="left-align">Check # {{ fields.order_id }}</td>
+                <td class="right-align">{{ fields.date }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="dotted-light" /></td>
+            </tr>
+            <tr>
+                <td class="left-align"><strong>Subtotal:</strong></td>
+                <td class="right-align"><strong>{{ fields.subtotal }}</strong></td>
+            </tr>
+            <tr>
+                 <td colspan="2"><hr class="dotted-light"/></td>
+            </tr>
+            <tr>
+                <td class="left-align"><label for="custom-tip"><strong>Tip:</strong></label></td>
+                <td class="right-align"> <input id="custom-tip" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189" type="text" class="form-control" placeholder="$0.00"/></td>
+            </tr>
+            <tr id="tip" class="tip">
+                <td colspan="2" >
+                    <div class="button-group-tip">
+                        <button onclick="percentTip(.15)">15%</button>
+                        <button onclick="percentTip(.20)">20%</button>
+                        <button onclick="percentTip(.25)">25%</button>
+                        <br/>
+                    </div>
+                </td>
+            </tr>
+
+
+<!--            <tr>-->
+<!--                <td class="left-align"><strong>Tip:</strong></td>-->
+<!--                <td class="right-align"><strong>$<span id="tip-amount">{{ fields.tip }}</span></strong></td>-->
+<!--            </tr>-->
+
+            <tr>
+                <td class="less" colspan="2"><hr class="dotted-heavy" /></td>
+            </tr>
+        <tr class="less">
+            <td class="left-align less"><h1>Total:</h1></td>
+            <td class="right-align"><h1>$<span id="total">{{ fields.subtotal }}</span></h1></td>
+            </tr>
+        </table>
+    </div>
+    <div class="jagged-paper"></div>
+
+        <!-- For browser or OS saved payments -->
+    <div id="payment-request-button">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+    <div id="paypal-button-container"></div>
+
+     <!-- For card payments -->
+    <form action="/stripe/charge" method="post" id="stripe-payment-form">
+        {% csrf_token %}
+      <div class="form-row">
+          <!--
+        <label for="card-element">
+          Pay with credit/debit
+        </label>
+        -->
+        <div id="card-element">
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <!-- Used to display Element errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+
+      <button id="stripe-submit">Pay with Credit/Debit</button>
+    </form>
+
+
+    <form action="/paypal/charge" method="post" id="paypal-payment-form">
+        {% csrf_token %}
+    </form>
+    <form action="/applepay/charge" method="post" id="applepay-payment-form">
+        {% csrf_token %}
+    </form>
+
+    <footer id="paid-footer" class="success">
+        <p class="powered-by-qrcodeio">Powered by <a href="https://qr-code.io/"> QR-Code.io</a></p>
+    </footer>
+
+
+<!-- modal and loader - START -->
+<span id="loader">
+    <div class="page-background"></div>
+    <div class="modal-box">
+        <h1>Processing your order</h1>
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+</span>
+
+<!-- modal and loader - END -->
+</body>
+<script>
+    var stripe = Stripe('pk_live_T1qBqXuT6ZxX93Zr8GJCkChe');
+    var qrOrderId = {{ fields.order_id }}
+    var paid = "{{ fields.paid }}" == "True";
+    var subtotal = {{ fields.subtotal }};
+    var grandTotal = {{ fields.subtotal }};
+    var tip = {{ fields.tip }};
+
+    var tipInput = new AutoNumeric(document.getElementById("custom-tip"));
+
+    var getStripeTotal = function(total){
+     stringTotal = grandTotal.toString().replace('.','')
+     if(stringTotal.charAt(0) == "0" && stringTotal.length == 2){
+        stringTotal = stringTotal.split("").reverse().join("");
+     }
+     return parseInt(stringTotal);
+    }
+
+    var paymentRequest = stripe.paymentRequest({
+          country: 'US',
+          currency: 'usd',
+          total: {
+            label: 'Crushed PB',
+            amount: getStripeTotal(grandTotal),
+          }
+        });
+
+    var updateTip = function(){
+            var total = (parseFloat(subtotal)+parseFloat(tip)).toFixed(2);
+            document.getElementById('total').textContent = total;
+            grandTotal = total;
+            paymentRequest.update({
+                total: {
+                    label: 'Crushed PB',
+                    amount: getStripeTotal(grandTotal),
+                }
+            });
+    }
+
+    var percentTip = function(percent){
+        var subtotal = parseFloat({{ fields.subtotal }}).toFixed(2);
+        tip = (subtotal*percent).toFixed(2);
+        $("#custom-tip").val(tip);
+        updateTip();
+    }
+
+
+    $("#custom-tip").bind("keyup input", function(event) {
+        var val = $(this).val();
+        if (val === undefined || val === ''){
+            val = 0;
+        }
+        while(val.indexOf(',') > -1){
+            val = val.replace(',','');
+        }
+        tip = val;
+        updateTip();
+    });
+
+    function submitForm(formId, values) {
+          // Insert the token ID into the form so it gets submitted to the server
+          var form = document.getElementById(formId);
+          for (var key in values) {
+              var inputField = document.createElement('input');
+              inputField.setAttribute('type', 'hidden');
+              inputField.setAttribute('name', key);
+              inputField.setAttribute('value', values[key]);
+              form.appendChild(inputField);
+           }
+          showLoader();
+          // Submit the form
+          form.submit();
+        }
+
+    var showLoader = function(){
+        // Show Loader Modal
+        document.getElementById("loader").style.display = 'inherit';
+    }
+
+    var hideLoader = function(){
+        // Hide loader modal
+        document.getElementById("loader").style.display = 'none';
+    }
+    
+
+    /* STRIPE CARD */
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+    // Create an instance of the card Element.
+    var elements = stripe.elements();
+    var card = elements.create('card', {style: style});
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+    // Create a token or display an error when the form is submitted.
+    var form = document.getElementById('stripe-payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the customer that there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    function stripeTokenHandler(token) {
+        values = {
+            'stripeToken': token.id,
+            'orderId': qrOrderId,
+            'tip': tip
+        }
+        submitForm('stripe-payment-form', values);
+    }
+   /* STRIPE APPLE PAY */
+    var elements = stripe.elements();
+    var prButton = elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+    });
+    // Check the availability of the Payment Request API first.
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        prButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+    paymentRequest.on('token', function(ev) {
+      // Send the token to your server to charge it!
+    fetch('/applepay/charge', {
+        method: 'POST',
+        body: JSON.stringify({stripeToken: ev.token.id, orderId: qrOrderId, tip: tip }),
+        headers: {'content-type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+      })
+      .then(function(response) {
+        if (response.ok) {
+          // Report to the browser that the payment was successful, prompting
+          // it to close the browser payment interface.
+          ev.complete('success');
+          window.location.reload();
+        } else {
+          // Report to the browser that the payment failed, prompting it to
+          // re-show the payment interface, or show an error message and close
+          // the payment interface.
+          ev.complete('fail');
+        }
+      });
+    });
+
+    /* Paypal */
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // Set up the transaction
+            showLoader();
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: grandTotal
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // Capture the funds from the transaction
+            return actions.order.capture().then(function(details) {
+                values = {
+                    'paypalOrderId': data.orderID,
+                    'qrOrderId': qrOrderId,
+                    'tip': tip
+                }
+                submitForm('paypal-payment-form', values);
+            });
+        }
+    }).render('#paypal-button-container');
+
+</script>
+</html>
